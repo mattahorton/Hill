@@ -427,18 +427,16 @@ void drawTerrain() {
   YTerrain * terLine = new YTerrain(g_HeightMap, false, true);
   YText * text = new YText(1.0f);
 
-  text->loc.set(-1000,200,1000);
-  text->setWidth(80.0f);
-
   ter->sca.set(0.1,0.1,0.1);
   terLine->loc.set(0,1,0);
   terLine->sca.set(0.1,0.1,0.1);
   entity->sca.set(1.5,1.2,1.2);
 
   Globals::sim->root().addChild(entity);
-  Globals::sim->root().addChild(text);
+
   entity->addChild(ter);
   entity->addChild(terLine);
+  Globals::sim->root().addChild(text);
   Globals::terrain = entity;
   Globals::text = text;
 }
