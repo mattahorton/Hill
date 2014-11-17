@@ -22,8 +22,13 @@ BKSim * Globals::sim = NULL;
 // Global mediator
 Mediator * Globals::mediator = NULL;
 
+// Global ScoreParser
+ScoreParser * Globals::parser = NULL;
+
 // Global Terrain
 YEntity * Globals::terrain = NULL;
+
+YText * Globals::text = NULL;
 
 // Shockwave ints
 std::array<int,10> Globals::waves = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};

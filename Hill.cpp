@@ -20,6 +20,8 @@
 #include "bk-sim.h"
 #include "Mediator.h"
 #include "audio.h"
+#include <FTGL/ftgl.h>
+#include "ScoreParser.h"
 using namespace std;
 
 #ifdef __MACOSX_CORE__
@@ -55,6 +57,7 @@ RtAudio initAudio();
 void startAudio(RtAudio audio);
 void LoadRawFile(char * strName, size_t nSize, uint8_t *pHeightMap);
 int Height(uint8_t *pHeightMap, float x, float z);
+void nextWord();
 
 // our datetype
 #define SAMPLE float
@@ -74,7 +77,6 @@ long g_bufferSize;
 #define WINDOW_HEIGHT 400
 
 
-bool bRender = true;                    // Polygon Flag Set To TRUE By Default ( NEW )
 uint8_t g_HeightMap[MAP_SIZE*MAP_SIZE];    // Holds The Height Map Data ( NEW )
 
 GLsizei g_height, g_width = 400;
@@ -103,8 +105,7 @@ void LoadRawFile(char * strName, size_t nSize, uint8_t *pHeightMap)
     // Here We Load The .RAW File Into Our pHeightMap Data Array
     // We Are Only Reading In '1', And The Size Is (Width * Height)
     size_t read = fread( pHeightMap, 1, nSize, pFile );
-    cerr << "Read " << read << " elements";
-    cerr << nSize << endl;
+
     // After We Read The Data, It's A Good Idea To Check If Everything Read Fine
     if (ferror( pFile ))
     {
@@ -114,6 +115,38 @@ void LoadRawFile(char * strName, size_t nSize, uint8_t *pHeightMap)
     // Close The File
     fclose(pFile);
 }
+
+//-----------------------------------------------------------------------------
+// Name: LoadJSONFile( )
+// Desc: load JSON file for poem
+//-----------------------------------------------------------------------------
+void LoadJSONFile(char * strName)
+{
+    FILE *pFile = fopen( strName, "rb" );
+
+    // Check To See If We Found The File And Could Open It
+    if ( pFile == NULL )
+    {
+        // Display Error Message And Stop The Function
+        cerr << "Can't Find The Poem!"<<endl;
+        exit(1);
+    }
+
+    char buffer[65536];
+    rapidjson::FileReadStream is(pFile, buffer, sizeof(buffer));
+    Globals::parser->score.ParseStream<0, UTF8<>, FileReadStream>(is);
+    Globals::parser->dumpContents();
+
+    // After We Read The Data, It's A Good Idea To Check If Everything Read Fine
+    if (ferror( pFile ))
+    {
+        cerr << "Failed To Get Data!" << endl;
+    }
+
+    // Close The File
+    fclose(pFile);
+}
+
 
 
 //-----------------------------------------------------------------------------
@@ -155,6 +188,10 @@ int main( int argc, char ** argv )
 
     // initialize GLUT
     glutInit( &argc, argv );
+
+    // initialize ScoreParser
+    Globals::parser = new ScoreParser();
+
     // init gfx
     initGfx();
 
@@ -191,8 +228,10 @@ void initGfx()
     glutCreateWindow( "Hill" );
 
     char * file ="Data/mountains.raw";
+    char * poem ="Data/poem.json";
     //Read our .RAW file, store it in g_HeightMap
     LoadRawFile(file, MAP_SIZE * MAP_SIZE, g_HeightMap);
+    LoadJSONFile(poem);
 
     camY = Height(g_HeightMap, camX, camZ) + 150;
 
@@ -243,7 +282,9 @@ void reshapeFunc( GLsizei w, GLsizei h )
     // load the identity matrix
     glLoadIdentity( );
     // position the view point
+    //gluLookAt( 0,600,0,0.0f, -1.0f, -10.0f, 0.0f, 1.0f, 0.0f );
     gluLookAt( camX, camY, camZ, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
+    //gluLookAt( 1000,1000,0, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
 }
 
 
@@ -301,8 +342,11 @@ void specialFunc(int key, int x, int y) {
     if (key == GLUT_KEY_UP) {
     } else if (key == GLUT_KEY_DOWN) {
     } else if (key == GLUT_KEY_RIGHT) {
+      nextWord();
+      gluLookAt( 600*cos(30),0,600*sin(30), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
     } else if (key == GLUT_KEY_LEFT) {
     }
+
 }
 
 
@@ -363,10 +407,6 @@ void displayFunc( )
     // clear the color and depth buffers
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    // Position and orient the camera
-    //cerr << camAngle << endl;
-    //cerr << camX << " " << camY << " " << camZ << endl;
-
     // cascade simulation
     Globals::sim->systemCascade();
 
@@ -385,6 +425,10 @@ void drawTerrain() {
   YEntity * entity = new YEntity();
   YTerrain * ter = new YTerrain(g_HeightMap, true, false);
   YTerrain * terLine = new YTerrain(g_HeightMap, false, true);
+  //YText * text = new YText(1.0f);
+
+  //text->loc.set(-1000,200,1000);
+  //text->setWidth(80.0f);
 
   ter->sca.set(0.1,0.1,0.1);
   terLine->loc.set(0,1,0);
@@ -392,9 +436,11 @@ void drawTerrain() {
   entity->sca.set(1.5,1.2,1.2);
 
   Globals::sim->root().addChild(entity);
+  //Globals::sim->root().addChild(text);
   entity->addChild(ter);
   entity->addChild(terLine);
   Globals::terrain = entity;
+  //Globals::text = text;
 }
 
 
@@ -406,4 +452,14 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
     int row = int(z / STEP_SIZE) % MAP_SIZE;
 
     return pHeightMap[(row * MAP_SIZE) + col];			// Index Into Our Height Array And Return The Height
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: nextWord( )
+// Desc: Draws the next word and initiates any effects related to that word
+//-----------------------------------------------------------------------------
+void nextWord() {
+
+  cerr << "Word";
 }

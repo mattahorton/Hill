@@ -295,9 +295,6 @@ void YEntity::popTransforms()
     glPopMatrix();
 }
 
-
-
-
 //-----------------------------------------------------------------------------
 // name: YText()
 // desc: ...
@@ -424,19 +421,15 @@ void YText::render()
 {
     // push
     glPushMatrix();
-    // blend
-    glEnable( GL_BLEND );
-    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    // lighting
-    glDisable( GL_LIGHTING );
-
     // set the linewidth
     glLineWidth( m_width );
 
     // stretch
     glScalef( m_stretch, 1, 1 );
     // draw the string
-    drawString( m_text );
+    // Set the font size and render a small text.
+    font.FaceSize(144);
+    font.Render("Hello World!");
     // pop
     glPopMatrix();
 }

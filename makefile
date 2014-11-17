@@ -21,7 +21,8 @@ OBJS=   RtAudio/RtAudio.o Hill.o color.o x-api/x-audio.o \
 	y-api/y-echo.o y-api/y-entity.o y-api/y-fft.o y-api/y-fluidsynth.o \
 	y-api/y-particle.o y-api/y-score-reader.o y-api/y-waveform.o \
 	stk/Delay.o stk/DelayL.o stk/MidiFileIn.o stk/Stk.o \
-	core/globals.o core/bk-sim.o Mediator.o core/audio.o
+	core/globals.o core/bk-sim.o Mediator.o core/audio.o \
+	core/ScoreParser.o
 
 Hill: $(OBJS)
 	$(CXX) -o Hill $(OBJS) $(LIBS)
@@ -106,6 +107,9 @@ Mediator.o: Mediator.h Mediator.cpp
 
 core/audio.o: core/audio.h core/audio.cpp
 	$(CXX) -o core/audio.o $(FLAGS) core/audio.cpp
+
+core/ScoreParser.o: core/ScoreParser.h core/ScoreParser.cpp
+	$(CXX) -o core/ScoreParser.o $(FLAGS) core/ScoreParser.cpp
 
 clean:
 	rm -f *~ *# *.o */*.o Hill

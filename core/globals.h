@@ -14,6 +14,7 @@
 #include "x-gfx.h"
 #include "x-vector3d.h"
 #include "y-entity.h"
+#include "ScoreParser.h"
 
 // c++
 #include <string>
@@ -41,6 +42,7 @@
 class BKSim;
 class Mediator;
 class YEntity;
+class YText;
 
 
 //-----------------------------------------------------------------------------
@@ -56,7 +58,11 @@ public:
     // global mediator
     static Mediator * mediator;
 
+    static ScoreParser * parser;
+
     static YEntity * terrain;
+
+    static YText * text;
 
     // Shockwave globals
     static std::array<int,10> waves;

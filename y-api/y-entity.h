@@ -40,6 +40,7 @@
 
 #include <vector>
 #include <string>
+#include <FTGL/ftgl.h>
 #include "x-gfx.h"
 #include "globals.h"
 
@@ -198,6 +199,8 @@ protected:
     GLfloat m_stretch;
     // alpha slew
     Vector3D m_iAlpha;
+    // FTGL font
+    FTGLPixmapFont font = FTPixmapFont("roboto/Roboto-Light.ttf");;
 };
 
 
