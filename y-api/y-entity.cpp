@@ -421,6 +421,11 @@ void YText::render()
 {
     // push
     glPushMatrix();
+    // blend
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    // lighting
+    glDisable( GL_LIGHTING );
     // set the linewidth
     glLineWidth( m_width );
 
@@ -430,6 +435,10 @@ void YText::render()
     // Set the font size and render a small text.
     font.FaceSize(144);
     font.Render("Hello World!");
+
+    //glEnable(GL_LIGHTING);
+    // enable depth test
+    //glEnable( GL_DEPTH_TEST );
     // pop
     glPopMatrix();
 }
