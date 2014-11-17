@@ -1,5 +1,5 @@
 CXX=g++
-INCLUDES=-IRtAudio/ -Istk/ -Ix-api/ -Iy-api -Icore/ -I./
+INCLUDES=-IRtAudio/ -Istk/ -Ix-api/ -Iy-api -Icore/ -I./ -Ifreetype2
 
 UNAME := $(shell uname)
 
@@ -12,7 +12,7 @@ FLAGS=-D__MACOSX_CORE__ $(INCLUDES) -c
 LIBS=-framework CoreAudio -framework CoreMIDI -framework CoreFoundation \
 	-framework IOKit -framework Carbon  -framework OpenGL \
 	-framework GLUT -framework Foundation \
-	-framework AppKit -lstdc++ -lm -lfluidsynth
+	-framework AppKit -lstdc++ -lm -lfluidsynth -lFTGL
 endif
 
 OBJS=   RtAudio/RtAudio.o Hill.o color.o x-api/x-audio.o \

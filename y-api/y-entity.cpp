@@ -422,6 +422,8 @@ void YText::update( YTimeInterval dt )
 //-----------------------------------------------------------------------------
 void YText::render()
 {
+    // push
+    glPushMatrix();
     // blend
     glEnable( GL_BLEND );
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
@@ -430,8 +432,7 @@ void YText::render()
 
     // set the linewidth
     glLineWidth( m_width );
-    // push
-    glPushMatrix();
+
     // stretch
     glScalef( m_stretch, 1, 1 );
     // draw the string
