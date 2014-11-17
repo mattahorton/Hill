@@ -200,7 +200,7 @@ protected:
     // alpha slew
     Vector3D m_iAlpha;
     // FTGL font
-    FTGLPixmapFont font = FTPixmapFont("roboto/Roboto-Light.ttf");;
+    FTGLTextureFont font = FTTextureFont("roboto/Roboto-Light.ttf");;
 };
 
 

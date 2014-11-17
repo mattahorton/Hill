@@ -427,6 +427,8 @@ void drawTerrain() {
   YTerrain * terLine = new YTerrain(g_HeightMap, false, true);
   YText * text = new YText(1.0f);
 
+  text->loc.set(0,100,0);
+
   ter->sca.set(0.1,0.1,0.1);
   terLine->loc.set(0,1,0);
   terLine->sca.set(0.1,0.1,0.1);
