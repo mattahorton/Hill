@@ -65,7 +65,7 @@ public:
     static YText * text;
 
     // Shockwave globals
-    static std::array<int,10> waves;
+    static std::array<int,5> waves;
 
     // path
     static std::string path;

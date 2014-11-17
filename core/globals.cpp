@@ -31,7 +31,7 @@ YEntity * Globals::terrain = NULL;
 YText * Globals::text = NULL;
 
 // Shockwave ints
-std::array<int,10> Globals::waves = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+std::array<int,5> Globals::waves = {-1,-1,-1,-1,-1};
 
 // Window size globals
 GLsizei Globals::windowWidth = DEFAULT_WINDOW_WIDTH;
