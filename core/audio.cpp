@@ -10,67 +10,17 @@
 #include "Mediator.h"
 #include "bk-sim.h"
 #include "y-fft.h"
-#include "y-fluidsynth.h"
-#include "y-echo.h"
+#include "x-thread.h"
 #include <iostream>
+#include <algorithm>
+#include <iterator>
 using namespace std;
 
 
 
-// globals
-YFluidSynth * g_synth;
-YEcho * g_echo;
-double g_now;
-double g_nextTime;
-int g_prog = 0;
 
-
-
-struct Note
-{
-    int channel;
-    float pitch;
-    float velocity;
-    float duration; // in seconds
-
-    Note( int c, float p, float v, float d )
-    {
-        channel = c;
-        pitch = p;
-        velocity = v;
-        duration = d;
-    }
-};
-
-
-
-
-vector<Note> g_notes;
-int g_noteIndex = 0;
 XMutex g_mutex;
-
-// play some notes
-void play(vector<int> &channels, vector<float> &pitches, vector<float> &vels )
-{
-    // lock
-    g_mutex.acquire();
-    // clear notes
-    g_notes.clear();
-
-    for (int i = 0; i < pitches.size(); i++) {
-      g_notes.push_back( Note(channels.at(i), pitches.at(i), vels.at(i), 0) );
-    }
-
-    // unlock
-    g_mutex.release();
-
-    // reset the index
-    g_noteIndex = 0;
-
-    // play now!
-    g_nextTime = g_now;
-}
-
+int g_currentTick = 0;
 
 
 //-----------------------------------------------------------------------------
@@ -79,8 +29,43 @@ void play(vector<int> &channels, vector<float> &pitches, vector<float> &vels )
 //-----------------------------------------------------------------------------
 static void audio_callback( SAMPLE * buffer, unsigned int numFrames, void * userData )
 {
+    // int channels = XAudioIO::numChannels();
+
     // zero out for output
     memset( buffer, 0, sizeof(SAMPLE)*numFrames*XAudioIO::numChannels() );
+    //memset( buffer, 0, sizeof(SAMPLE)*numFrames*channels );
+    // fill_n(buffer, sizeof(SAMPLE)*numFrames*channels, 0);
+    // cerr << sizeof(buffer) << endl;
+
+    //memcpy(buffer, Globals::wav->track, sizeof(SAMPLE)*numFrames*channels);
+    //copy(begin(Globals::wav->track), end(Globals::wav->track), begin(buffer));
+
+    // if((g_currentTick < Globals::wav->length) && ((Globals::wav->length - g_currentTick) > numFrames)) {
+    //   for (int i = 0; i < numFrames*channels; i += channels){
+    //     buffer[i] = (SAMPLE)Globals::wav->track[g_currentTick+i];
+    //     buffer[i+1] = (SAMPLE)Globals::wav->track[g_currentTick+i+1];
+    //     // cerr << i << " " << i+1 << endl;
+    //     // cerr << buffer[i] << " " << buffer[i+1] << endl;
+    //     // cerr << buffer[i+XAudioIO::numChannels()];
+    //   }
+    //
+    //   // cerr << sizeof(buffer)/sizeof(SAMPLE) << endl;
+    //   // cerr << "here" << endl;
+    // } else if ((Globals::wav->length - g_currentTick) < numFrames) {
+    //   for (int i = 0; i < numFrames*channels; i += channels){
+    //     if (i < numFrames - g_currentTick) {
+    //       buffer[i] = (SAMPLE)Globals::wav->track[g_currentTick+i];
+    //       buffer[i+1] = (SAMPLE)Globals::wav->track[g_currentTick+i+1];
+    //     } else {
+    //       buffer[i] = 0;
+    //       buffer[i+1] = 0;
+    //     }
+    //     buffer[i+XAudioIO::numChannels()] = Globals::wav->track[i];
+    //     // cerr << buffer[i+XAudioIO::numChannels()];
+    //   }
+    // }
+    //
+    // g_currentTick += numFrames;
 
 }
 
@@ -100,15 +85,6 @@ bool audio_init( unsigned int srate, unsigned int frameSize, unsigned channels )
         return false;
     }
 
-    g_synth = new YFluidSynth();
-    g_synth->init( srate, 32 );
-    g_synth->load( "data/sfonts/jRhodes3c-stereo.sf2", "" );
-    g_synth->programChange( 0, 0 );
-
-    // allocate echo
-    g_echo = new YEcho( srate );
-    g_echo->setDelay( 0, .1 );
-    g_echo->setDelay( 1, .1 );
 
     // allocate
     Globals::lastAudioBuffer = new SAMPLE[frameSize*channels];

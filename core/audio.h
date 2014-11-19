@@ -16,9 +16,5 @@ bool audio_init( unsigned int srate, unsigned int frameSize, unsigned channels )
 // start audio
 bool audio_start();
 
-// play some notes
-void play(std::vector<int> &channels, std::vector<float> &pitches, std::vector<float> &vels );
-
-
 
 #endif
