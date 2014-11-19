@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+#include <ostream>
 #include <cstring>
 #include <sys/time.h>
 #include <time.h>
@@ -22,6 +23,8 @@
 #include "audio.h"
 #include <FTGL/ftgl.h>
 #include "ScoreParser.h"
+#include "WavFile.h"
+#include "FileWvIn.h"
 using namespace std;
 
 #ifdef __MACOSX_CORE__
@@ -58,6 +61,7 @@ void startAudio(RtAudio audio);
 void LoadRawFile(char * strName, size_t nSize, uint8_t *pHeightMap);
 int Height(uint8_t *pHeightMap, float x, float z);
 void nextWord();
+void LoadWavFile(const char * filename);
 
 // our datetype
 #define SAMPLE float
@@ -184,7 +188,7 @@ void help()
 int main( int argc, char ** argv )
 {
     // init audio
-    //audio_init(THE_SRATE, FRAMESIZE, NUMCHANNELS);
+    audio_init(THE_SRATE, FRAMESIZE, NUMCHANNELS);
 
     // initialize GLUT
     glutInit( &argc, argv );
@@ -199,10 +203,10 @@ int main( int argc, char ** argv )
     Globals::sim = new BKSim();
 
     // Draw sequencer at start
-    drawTerrain();
+    //drawTerrain();
 
     // Start Audio
-    //audio_start();
+    audio_start();
 
     // print help
     help();
@@ -227,11 +231,13 @@ void initGfx()
     // create the window
     glutCreateWindow( "Hill" );
 
-    char * file ="Data/mountains.raw";
-    char * poem ="Data/poem.json";
+    char * file = "Data/mountains.raw";
+    char * poem = "Data/poem.json";
+    char * wav = "Data/tpain.wav";
     //Read our .RAW file, store it in g_HeightMap
     LoadRawFile(file, MAP_SIZE * MAP_SIZE, g_HeightMap);
     LoadJSONFile(poem);
+    LoadWavFile(wav);
 
     camY = Height(g_HeightMap, camX, camZ) + 150;
 
@@ -462,4 +468,45 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
 void nextWord() {
 
   cerr << "Word";
+}
+
+//-----------------------------------------------------------------------------
+// Name: LoadWavFile( )
+// Desc: load Wav File
+//-----------------------------------------------------------------------------
+void LoadWavFile(const char * filename) {
+
+  WavFile *w = new WavFile();
+  w->pos = 0;
+  w->fade = -1;    w->fade_length = 0;
+  w->play = FALSE; w->loop = FALSE;
+  w->gain = 1; w->just_started = 40;
+
+  stk::FileWvIn f = stk::FileWvIn();
+  f.openFile(filename);
+
+  if (f.getFileRate() != 44100){
+    cerr << "The sample rate of this audio file is not 44100!" << endl;
+  }
+
+  w->channels = f.channelsOut();
+  w->length = (int)f.getSize();
+  w->track = new float[w->length*w->channels];
+
+  stk::StkFrames frames = stk::StkFrames(1, w->channels);
+
+  for (int i = 0; i < w->length*w->channels; i += w->channels){
+    f.tick();
+    frames = f.lastFrame();
+    //cerr << sizeof(frames) << endl;
+    for(int chan = 0; chan < w->channels; chan++) {
+      w->track[i+chan] = frames[chan];
+      //cerr << w->track[i+chan] << " " << chan << endl;
+    }
+    //cerr << endl;
+    // w->track[i] = f.tick(0);
+    // w->track[i+1] = f.lastOut(1);
+  }
+
+  Globals::wav = w;
 }

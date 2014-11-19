@@ -15,6 +15,7 @@
 #include "x-vector3d.h"
 #include "y-entity.h"
 #include "ScoreParser.h"
+#include "WavFile.h"
 
 // c++
 #include <string>
@@ -59,6 +60,8 @@ public:
     static Mediator * mediator;
 
     static ScoreParser * parser;
+
+    static WavFile * wav;
 
     static YEntity * terrain;
 

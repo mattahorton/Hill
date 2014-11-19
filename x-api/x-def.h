@@ -54,7 +54,7 @@
 #endif
 
 #define ONE_PI (3.14159265358979323846)
-#define TWO_PI (2.0 * ONE_PI)
+//#define TWO_PI (2.0 * ONE_PI)
 #define SQRT2  (1.41421356237309504880)
 #define PI_OVER_180 (ONE_PI / 180.0)
 
@@ -67,7 +67,7 @@
 #define __PLATFORM_MACOSX__
 #endif
 
-#if defined(__LINUX_ALSA__) || defined(__LINUX_JACK__) || defined(__LINUX_OSS__) 
+#if defined(__LINUX_ALSA__) || defined(__LINUX_JACK__) || defined(__LINUX_OSS__)
 #define __PLATFORM_LINUX__
 #endif
 

@@ -22,7 +22,7 @@
     STK WWW site: http://ccrma.stanford.edu/software/stk/
 
     The Synthesis ToolKit in C++ (STK)
-    Copyright (c) 1995-2010 Perry R. Cook and Gary P. Scavone
+    Copyright (c) 1995--2014 Perry R. Cook and Gary P. Scavone
 
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation files
@@ -51,6 +51,7 @@
 /***************************************************/
 
 #include "Stk.h"
+#include <stdlib.h>
 
 namespace stk {
 
@@ -65,6 +66,7 @@ const Stk::StkFormat Stk :: STK_FLOAT64 = 0x20;
 bool Stk :: showWarnings_ = true;
 bool Stk :: printErrors_ = true;
 std::vector<Stk *> Stk :: alertList_;
+std::ostringstream Stk :: oStream_;
 
 Stk :: Stk( void )
   : ignoreSampleRateChange_(false)
@@ -86,7 +88,7 @@ void Stk :: setSampleRate( StkFloat rate )
   }
 }
 
-void Stk :: sampleRateChanged( StkFloat newRate, StkFloat oldRate )
+void Stk :: sampleRateChanged( StkFloat /*newRate*/, StkFloat /*oldRate*/ )
 {
   // This function should be reimplemented in classes that need to
   // make internal variable adjustments in response to a global sample
@@ -123,7 +125,7 @@ void Stk :: setRawwavePath( std::string path )
 
 void Stk :: swap16(unsigned char *ptr)
 {
-  register unsigned char val;
+  unsigned char val;
 
   // Swap 1st and 2nd bytes
   val = *(ptr);
@@ -133,7 +135,7 @@ void Stk :: swap16(unsigned char *ptr)
 
 void Stk :: swap32(unsigned char *ptr)
 {
-  register unsigned char val;
+  unsigned char val;
 
   // Swap 1st and 4th bytes
   val = *(ptr);
@@ -149,7 +151,7 @@ void Stk :: swap32(unsigned char *ptr)
 
 void Stk :: swap64(unsigned char *ptr)
 {
-  register unsigned char val;
+  unsigned char val;
 
   // Swap 1st and 8th bytes
   val = *(ptr);
@@ -190,10 +192,10 @@ void Stk :: sleep(unsigned long milliseconds)
 #endif
 }
 
-void Stk :: handleError( StkError::Type type )
+void Stk :: handleError( StkError::Type type ) const
 {
-  handleError( errorString_.str(), type );
-  errorString_.str( std::string() ); // reset the ostringstream buffer
+  handleError( oStream_.str(), type );
+  oStream_.str( std::string() ); // reset the ostringstream buffer
 }
 
 void Stk :: handleError( const char *message, StkError::Type type )
@@ -208,7 +210,7 @@ void Stk :: handleError( std::string message, StkError::Type type )
     if ( !showWarnings_ ) return;
     std::cerr << '\n' << message << '\n' << std::endl;
   }
-  else if (type == StkError::DEBUG_WARNING) {
+  else if (type == StkError::DEBUG_PRINT) {
 #if defined(_STK_DEBUG_)
     std::cerr << '\n' << message << '\n' << std::endl;
 #endif
@@ -227,7 +229,7 @@ void Stk :: handleError( std::string message, StkError::Type type )
 //
 
 StkFrames :: StkFrames( unsigned int nFrames, unsigned int nChannels )
-  : nFrames_( nFrames ), nChannels_( nChannels )
+  : data_( 0 ), nFrames_( nFrames ), nChannels_( nChannels )
 {
   size_ = nFrames_ * nChannels_;
   bufferSize_ = size_;
@@ -241,13 +243,12 @@ StkFrames :: StkFrames( unsigned int nFrames, unsigned int nChannels )
     }
 #endif
   }
-  else data_ = 0;
 
   dataRate_ = Stk::sampleRate();
 }
 
 StkFrames :: StkFrames( const StkFloat& value, unsigned int nFrames, unsigned int nChannels )
-  : nFrames_( nFrames ), nChannels_( nChannels )
+  : data_( 0 ), nFrames_( nFrames ), nChannels_( nChannels )
 {
   size_ = nFrames_ * nChannels_;
   bufferSize_ = size_;
@@ -261,7 +262,6 @@ StkFrames :: StkFrames( const StkFloat& value, unsigned int nFrames, unsigned in
 #endif
     for ( long i=0; i<(long)size_; i++ ) data_[i] = value;
   }
-  else data_ = 0;
 
   dataRate_ = Stk::sampleRate();
 }
@@ -272,7 +272,7 @@ StkFrames :: ~StkFrames()
 }
 
 StkFrames :: StkFrames( const StkFrames& f )
-  : size_(0), bufferSize_(0)
+  : data_(0), size_(0), bufferSize_(0)
 {
   resize( f.frames(), f.channels() );
   dataRate_ = Stk::sampleRate();
@@ -281,6 +281,7 @@ StkFrames :: StkFrames( const StkFrames& f )
 
 StkFrames& StkFrames :: operator= ( const StkFrames& f )
 {
+  data_ = 0;
   size_ = 0;
   bufferSize_ = 0;
   resize( f.frames(), f.channels() );

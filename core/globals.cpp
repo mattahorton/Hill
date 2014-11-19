@@ -25,6 +25,9 @@ Mediator * Globals::mediator = NULL;
 // Global ScoreParser
 ScoreParser * Globals::parser = NULL;
 
+// Global WaveFile
+WavFile * Globals::wav = NULL;
+
 // Global Terrain
 YEntity * Globals::terrain = NULL;
 
