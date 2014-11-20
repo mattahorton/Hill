@@ -23,8 +23,7 @@
 #include "audio.h"
 #include <FTGL/ftgl.h>
 #include "ScoreParser.h"
-#include "WavFile.h"
-#include "FileWvIn.h"
+#include "SndSrc.h"
 using namespace std;
 
 #ifdef __MACOSX_CORE__
@@ -59,9 +58,10 @@ void drawTerrain();
 RtAudio initAudio();
 void startAudio(RtAudio audio);
 void LoadRawFile(char * strName, size_t nSize, uint8_t *pHeightMap);
+void LoadWavFile(char * strName);
+void LoadJSONFile(char * strName);
 int Height(uint8_t *pHeightMap, float x, float z);
 void nextWord();
-void LoadWavFile(const char * filename);
 
 // our datetype
 #define SAMPLE float
@@ -149,6 +149,16 @@ void LoadJSONFile(char * strName)
 
     // Close The File
     fclose(pFile);
+}
+
+//-----------------------------------------------------------------------------
+// Name: LoadWavFile( )
+// Desc: load Wav file
+//-----------------------------------------------------------------------------
+void LoadWavFile(char * strName) {
+  // go
+  if( !Globals::sndfile.read( strName ) )
+    exit( 1 );
 }
 
 
@@ -468,45 +478,4 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
 void nextWord() {
 
   cerr << "Word";
-}
-
-//-----------------------------------------------------------------------------
-// Name: LoadWavFile( )
-// Desc: load Wav File
-//-----------------------------------------------------------------------------
-void LoadWavFile(const char * filename) {
-
-  WavFile *w = new WavFile();
-  w->pos = 0;
-  w->fade = -1;    w->fade_length = 0;
-  w->play = FALSE; w->loop = FALSE;
-  w->gain = 1; w->just_started = 40;
-
-  stk::FileWvIn f = stk::FileWvIn();
-  f.openFile(filename);
-
-  if (f.getFileRate() != 44100){
-    cerr << "The sample rate of this audio file is not 44100!" << endl;
-  }
-
-  w->channels = f.channelsOut();
-  w->length = (int)f.getSize();
-  w->track = new float[w->length*w->channels];
-
-  stk::StkFrames frames = stk::StkFrames(1, w->channels);
-
-  for (int i = 0; i < w->length*w->channels; i += w->channels){
-    f.tick();
-    frames = f.lastFrame();
-    //cerr << sizeof(frames) << endl;
-    for(int chan = 0; chan < w->channels; chan++) {
-      w->track[i+chan] = frames[chan];
-      //cerr << w->track[i+chan] << " " << chan << endl;
-    }
-    //cerr << endl;
-    // w->track[i] = f.tick(0);
-    // w->track[i+1] = f.lastOut(1);
-  }
-
-  Globals::wav = w;
 }

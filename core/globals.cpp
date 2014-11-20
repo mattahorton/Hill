@@ -25,11 +25,11 @@ Mediator * Globals::mediator = NULL;
 // Global ScoreParser
 ScoreParser * Globals::parser = NULL;
 
-// Global WaveFile
-WavFile * Globals::wav = NULL;
-
 // Global Terrain
 YEntity * Globals::terrain = NULL;
+
+// Global SndFileSrc
+SndFileSrc Globals::sndfile;
 
 YText * Globals::text = NULL;
 

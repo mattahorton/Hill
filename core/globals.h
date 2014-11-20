@@ -15,7 +15,7 @@
 #include "x-vector3d.h"
 #include "y-entity.h"
 #include "ScoreParser.h"
-#include "WavFile.h"
+#include "SndSrc.h"
 
 // c++
 #include <string>
@@ -61,9 +61,9 @@ public:
 
     static ScoreParser * parser;
 
-    static WavFile * wav;
-
     static YEntity * terrain;
+
+    static SndFileSrc sndfile;
 
     static YText * text;
 

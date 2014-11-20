@@ -20,7 +20,6 @@ using namespace std;
 
 
 XMutex g_mutex;
-int g_currentTick = 0;
 
 
 //-----------------------------------------------------------------------------
@@ -29,43 +28,12 @@ int g_currentTick = 0;
 //-----------------------------------------------------------------------------
 static void audio_callback( SAMPLE * buffer, unsigned int numFrames, void * userData )
 {
-    // int channels = XAudioIO::numChannels();
+    int channels = XAudioIO::numChannels();
 
     // zero out for output
     memset( buffer, 0, sizeof(SAMPLE)*numFrames*XAudioIO::numChannels() );
-    //memset( buffer, 0, sizeof(SAMPLE)*numFrames*channels );
-    // fill_n(buffer, sizeof(SAMPLE)*numFrames*channels, 0);
-    // cerr << sizeof(buffer) << endl;
-
-    //memcpy(buffer, Globals::wav->track, sizeof(SAMPLE)*numFrames*channels);
-    //copy(begin(Globals::wav->track), end(Globals::wav->track), begin(buffer));
-
-    // if((g_currentTick < Globals::wav->length) && ((Globals::wav->length - g_currentTick) > numFrames)) {
-    //   for (int i = 0; i < numFrames*channels; i += channels){
-    //     buffer[i] = (SAMPLE)Globals::wav->track[g_currentTick+i];
-    //     buffer[i+1] = (SAMPLE)Globals::wav->track[g_currentTick+i+1];
-    //     // cerr << i << " " << i+1 << endl;
-    //     // cerr << buffer[i] << " " << buffer[i+1] << endl;
-    //     // cerr << buffer[i+XAudioIO::numChannels()];
-    //   }
-    //
-    //   // cerr << sizeof(buffer)/sizeof(SAMPLE) << endl;
-    //   // cerr << "here" << endl;
-    // } else if ((Globals::wav->length - g_currentTick) < numFrames) {
-    //   for (int i = 0; i < numFrames*channels; i += channels){
-    //     if (i < numFrames - g_currentTick) {
-    //       buffer[i] = (SAMPLE)Globals::wav->track[g_currentTick+i];
-    //       buffer[i+1] = (SAMPLE)Globals::wav->track[g_currentTick+i+1];
-    //     } else {
-    //       buffer[i] = 0;
-    //       buffer[i+1] = 0;
-    //     }
-    //     buffer[i+XAudioIO::numChannels()] = Globals::wav->track[i];
-    //     // cerr << buffer[i+XAudioIO::numChannels()];
-    //   }
-    // }
-    //
-    // g_currentTick += numFrames;
+    
+    Globals::sndfile.synthesize2( buffer, numFrames );
 
 }
 

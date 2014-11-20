@@ -1,27 +1,20 @@
 CXX=g++
-INCLUDES=-IRtAudio/ -Istk/ -Ix-api/ -Iy-api -Icore/ -I./ -Ifreetype2
+INCLUDES=-IRtAudio/ -Ix-api/ -Iy-api -Icore/ -I./ -Ifreetype2
 
-UNAME := $(shell uname)
-
-ifeq ($(UNAME), Linux)
-FLAGS=-D__UNIX_JACK__ -c -std=c++11
-LIBS=-lasound -lpthread -ljack -lstdc++ -lm -lGL -lGLU -lglut
-endif
-ifeq ($(UNAME), Darwin)
 FLAGS=-D__MACOSX_CORE__ $(INCLUDES) -c -std=c++11
 LIBS=-framework CoreAudio -framework CoreMIDI -framework CoreFoundation \
 	-framework IOKit -framework Carbon  -framework OpenGL \
 	-framework GLUT -framework Foundation \
-	-framework AppKit -lstdc++ -lm -lfluidsynth -lFTGL
-endif
+	-framework AppKit -lstdc++ -lm -lfluidsynth -lFTGL -lsndfile
+
 
 OBJS=   RtAudio/RtAudio.o Hill.o color.o x-api/x-audio.o \
 	x-api/x-buffer.o x-api/x-fun.o x-api/x-gfx.o x-api/x-loadlum.o \
 	x-api/x-loadrgb.o x-api/x-thread.o x-api/x-vector3d.o y-api/y-charting.o \
 	y-api/y-entity.o y-api/y-fft.o y-api/y-fluidsynth.o \
-	y-api/y-particle.o y-api/y-waveform.o \
- 	stk/Stk.o stk/FileRead.o stk/FileWvIn.o core/globals.o \
+	y-api/y-particle.o y-api/y-waveform.o core/globals.o \
 	core/bk-sim.o Mediator.o core/audio.o core/ScoreParser.o \
+	sndsrc.o
 
 Hill: $(OBJS)
 	$(CXX) -o Hill $(OBJS) $(LIBS)
@@ -77,15 +70,6 @@ y-api/y-particle.o: y-api/y-particle.h y-api/y-particle.cpp
 y-api/y-waveform.o: y-api/y-waveform.h y-api/y-waveform.cpp
 	$(CXX) -o y-api/y-waveform.o $(FLAGS) y-api/y-waveform.cpp
 
-stk/FileRead.o: stk/FileRead.h stk/FileRead.cpp
-	$(CXX) -o stk/FileRead.o $(FLAGS) stk/FileRead.cpp
-
-stk/FileWvIn.o: stk/FileWvIn.h stk/FileWvIn.cpp
-	$(CXX) -o stk/FileWvIn.o $(FLAGS) stk/FileWvIn.cpp
-
-stk/Stk.o: stk/Stk.h stk/Stk.cpp
-	$(CXX) -o stk/Stk.o $(FLAGS) stk/Stk.cpp
-
 core/bk-sim.o: core/bk-sim.h core/bk-sim.cpp
 	$(CXX) -o core/bk-sim.o $(FLAGS) core/bk-sim.cpp
 
@@ -100,6 +84,9 @@ core/audio.o: core/audio.h core/audio.cpp
 
 core/ScoreParser.o: core/ScoreParser.h core/ScoreParser.cpp
 	$(CXX) -o core/ScoreParser.o $(FLAGS) core/ScoreParser.cpp
+
+sndsrc.o: sndsrc.h sndsrc.cpp
+	$(CXX) $(FLAGS) sndsrc.cpp
 
 clean:
 	rm -f *~ *# *.o */*.o Hill
