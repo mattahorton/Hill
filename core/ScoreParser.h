@@ -20,4 +20,4 @@ class ScoreParser
 
 };
 
-#endif _SCORE_PARSER_H_
+#endif

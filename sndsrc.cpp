@@ -24,7 +24,7 @@ SAMPLE * readData( const string & filename, int * size, int * srate, int * chann
     // zero out
     *size = 0;
     *srate = 0;
-    
+
     // open it
     sf = sf_open( filename.c_str(), SFM_READ, &info );
     // check it
@@ -34,7 +34,7 @@ SAMPLE * readData( const string & filename, int * size, int * srate, int * chann
         cout << "error: cannot open '" << filename << "'" << endl;
         return NULL;
     }
-    
+
     // allocate the whole thing!
     buffer = new SAMPLE[info.frames*info.channels];
     // check it
@@ -44,7 +44,7 @@ SAMPLE * readData( const string & filename, int * size, int * srate, int * chann
         cout << "error: out of memory... frak" << endl;
         goto done;
     }
-    
+
     // read it
     if( sf_read_float( sf, buffer, info.frames*info.channels ) != info.frames*info.channels )
     {
@@ -54,18 +54,18 @@ SAMPLE * readData( const string & filename, int * size, int * srate, int * chann
         delete [] buffer; buffer = NULL;
         goto done;
     }
-    
+
     // set size
     *size = info.frames;
     // set srate
     *srate = info.samplerate;
     // set channels
     *channels = info.channels;
-    
+
 done:
     // close sf
     if( sf ) sf_close( sf );
-    
+
     return buffer;
 }
 
@@ -103,7 +103,7 @@ void SndFileSrc::cleanup()
         delete [] m_buffer;
         m_buffer = NULL;
     }
-    
+
     m_playHead = 0;
 }
 
@@ -117,7 +117,7 @@ bool SndFileSrc::read( const string & filename )
     m_buffer = readData( filename, &m_size, &m_srate, &m_channels );
     // rewind
     rewind();
-    
+
     return (m_buffer != NULL );
 }
 
@@ -151,22 +151,51 @@ bool SndFileSrc::synthesize2( SAMPLE * output, int numFrames )
 {
     // debug
     // cerr << "rate: " << m_rate << " playhead: " << m_playHead << endl;
-    
+
     // fill
     for( int i = 0; i < numFrames; i++ )
     {
         // have we reached EOF
         if( m_rate >= 0 && m_playHead >= m_size ) return false;
         if( m_rate < 0 && m_playHead < 0 ) return false;
-        
+
         // copy next frame
         output[i*m_channels] = m_gain * m_buffer[(int)(m_playHead+.5)*m_channels];
         if( m_channels == 2 )
             output[i*m_channels+1] = m_gain * m_buffer[(int)(m_playHead+.5)*m_channels+1];
-        
+
         // increment by 'rate' frame
         m_playHead += m_rate;
     }
-    
+
     return true;
+}
+
+// synthesize the next buffer (stereo)
+bool SndFileSrc::synthesize2( SAMPLE * output, SAMPLE * input, int numFrames )
+{
+  // debug
+  // cerr << "rate: " << m_rate << " playhead: " << m_playHead << endl;
+
+  // fill
+  for( int i = 0; i < numFrames; i++ )
+  {
+    // have we reached EOF
+    if( m_rate >= 0 && m_playHead >= numFrames ) return false;
+    if( m_rate < 0 && m_playHead < 0 ) return false;
+
+    // copy next frame
+    output[i*m_channels] = m_gain * input[(int)(m_playHead+.5)*m_channels];
+    if( m_channels == 2 )
+      output[i*m_channels+1] = m_gain * input[(int)(m_playHead+.5)*m_channels+1];
+      cerr << output[i*m_channels+1] << endl;
+      // increment by 'rate' frame
+      m_playHead += m_rate;
+  }
+
+  return true;
+}
+
+SAMPLE * SndFileSrc::getAudio(){
+  return m_buffer;
 }

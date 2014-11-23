@@ -14,7 +14,7 @@ OBJS=   RtAudio/RtAudio.o Hill.o color.o x-api/x-audio.o \
 	y-api/y-entity.o y-api/y-fft.o y-api/y-fluidsynth.o \
 	y-api/y-particle.o y-api/y-waveform.o core/globals.o \
 	core/bk-sim.o Mediator.o core/audio.o core/ScoreParser.o \
-	sndsrc.o
+	sndsrc.o Sukothai.o
 
 Hill: $(OBJS)
 	$(CXX) -o Hill $(OBJS) $(LIBS)
@@ -78,6 +78,9 @@ core/globals.o: core/globals.h core/globals.cpp
 
 Mediator.o: Mediator.h Mediator.cpp
 	$(CXX) $(FLAGS) Mediator.cpp
+
+Sukothai.0: Sukothai.h Sukothai.cpp
+	$(CXX) $(FLAGS) Sukothai.cpp
 
 core/audio.o: core/audio.h core/audio.cpp
 	$(CXX) -o core/audio.o $(FLAGS) core/audio.cpp

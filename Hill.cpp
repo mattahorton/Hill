@@ -159,6 +159,8 @@ void LoadWavFile(char * strName) {
   // go
   if( !Globals::sndfile.read( strName ) )
     exit( 1 );
+  int size = Globals::sndfile.getSize();
+  Globals::sukothai = Sukothai(Globals::sndfile.getAudio(),10,size);
 }
 
 

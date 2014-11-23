@@ -16,6 +16,8 @@
 #include "y-entity.h"
 #include "ScoreParser.h"
 #include "SndSrc.h"
+#include "Sukothai.h"
+#include "globals.h"
 
 // c++
 #include <string>
@@ -26,7 +28,7 @@
 #include <queue>
 
 // defines
-#define THE_SRATE        44100
+#define THE_SRATE    44100
 #define FRAMESIZE    512
 #define NUMCHANNELS  2
 #define MAX_TEXTURES 32
@@ -66,6 +68,8 @@ public:
     static SndFileSrc sndfile;
 
     static YText * text;
+
+    static Sukothai sukothai;
 
     // Shockwave globals
     static std::array<int,5> waves;
