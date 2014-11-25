@@ -176,6 +176,7 @@ bool SndFileSrc::synthesize2( SAMPLE * output, SAMPLE * input, int numFrames )
 {
   // debug
   // cerr << "rate: " << m_rate << " playhead: " << m_playHead << endl;
+  //cerr << numFrames << endl;
 
   // fill
   for( int i = 0; i < numFrames; i++ )
@@ -185,10 +186,10 @@ bool SndFileSrc::synthesize2( SAMPLE * output, SAMPLE * input, int numFrames )
     if( m_rate < 0 && m_playHead < 0 ) return false;
 
     // copy next frame
+    //cerr << (int)(m_playHead+.5)*m_channels << endl;
     output[i*m_channels] = m_gain * input[(int)(m_playHead+.5)*m_channels];
     if( m_channels == 2 )
       output[i*m_channels+1] = m_gain * input[(int)(m_playHead+.5)*m_channels+1];
-      cerr << output[i*m_channels+1] << endl;
       // increment by 'rate' frame
       m_playHead += m_rate;
   }

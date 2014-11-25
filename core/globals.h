@@ -69,7 +69,7 @@ public:
 
     static YText * text;
 
-    static Sukothai sukothai;
+    static Sukothai * sukothai;
 
     // Shockwave globals
     static std::array<int,5> waves;

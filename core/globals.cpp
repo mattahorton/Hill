@@ -31,7 +31,7 @@ YEntity * Globals::terrain = NULL;
 // Global SndFileSrc
 SndFileSrc Globals::sndfile;
 
-Sukothai Globals::sukothai;
+Sukothai * Globals::sukothai = NULL;
 
 YText * Globals::text = NULL;
 

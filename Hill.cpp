@@ -55,8 +55,6 @@ void specialFunc( int, int, int );
 void mouseFunc( int button, int state, int x, int y );
 void help();
 void drawTerrain();
-RtAudio initAudio();
-void startAudio(RtAudio audio);
 void LoadRawFile(char * strName, size_t nSize, uint8_t *pHeightMap);
 void LoadWavFile(char * strName);
 void LoadJSONFile(char * strName);
@@ -159,8 +157,9 @@ void LoadWavFile(char * strName) {
   // go
   if( !Globals::sndfile.read( strName ) )
     exit( 1 );
-  int size = Globals::sndfile.getSize();
-  Globals::sukothai = Sukothai(Globals::sndfile.getAudio(),10,size);
+
+  cerr << Globals::sndfile.getSize() << endl;
+  Globals::sukothai = new Sukothai(Globals::sndfile.getAudio(),10,Globals::sndfile.getSize());
 }
 
 
@@ -217,6 +216,9 @@ int main( int argc, char ** argv )
     // Draw sequencer at start
     //drawTerrain();
 
+    char * wav = "Data/mymonth.wav";
+    LoadWavFile(wav);
+
     // Start Audio
     audio_start();
 
@@ -245,11 +247,10 @@ void initGfx()
 
     char * file = "Data/mountains.raw";
     char * poem = "Data/poem.json";
-    char * wav = "Data/tpain.wav";
+
     //Read our .RAW file, store it in g_HeightMap
     LoadRawFile(file, MAP_SIZE * MAP_SIZE, g_HeightMap);
     LoadJSONFile(poem);
-    LoadWavFile(wav);
 
     camY = Height(g_HeightMap, camX, camZ) + 150;
 
