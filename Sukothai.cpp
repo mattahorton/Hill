@@ -8,7 +8,7 @@ Sukothai::Sukothai(SAMPLE * in, int iterations, int size) {
   //cerr << size << endl;
   maxIter = iterations;
   numFrames = size;
-  //if(in != NULL) setInput(in, numFrames);
+  if(in != NULL) setInput(in, numFrames);
   //cerr << numFrames << endl;
 }
 
@@ -39,7 +39,7 @@ void Sukothai::setInput(SAMPLE * in, int frames) {
 
   // new buffer size in terms of samples
   // cerr << frames << endl;
-  int newSize = ((int)(maxIter*extraTime*2*THE_SRATE)+frames*FRAMESIZE*2);
+  int newSize = ((int)(maxIter*extraTime*2*THE_SRATE)+frames*2);
   // cerr << newSize << " newSize" << endl;
   //
   // half of the additional time in terms of samples
@@ -51,10 +51,11 @@ void Sukothai::setInput(SAMPLE * in, int frames) {
   // int delay;
   int currentMonoSize = 0;
 
-  currentMonoSize = frames*FRAMESIZE;
+  currentMonoSize = frames;
   mono = new SAMPLE[currentMonoSize];
   getMono(in, mono, currentMonoSize);
 
+  delete [] mono;
   // seed new normal distribution generator
   // unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
   // std::default_random_engine generator(seed);

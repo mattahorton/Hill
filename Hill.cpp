@@ -214,7 +214,7 @@ int main( int argc, char ** argv )
     Globals::sim = new BKSim();
 
     // Draw sequencer at start
-    drawTerrain();
+    //drawTerrain();
 
     char * wav = "Data/mymonth.wav";
     LoadWavFile(wav);
@@ -362,7 +362,6 @@ void specialFunc(int key, int x, int y) {
     } else if (key == GLUT_KEY_DOWN) {
     } else if (key == GLUT_KEY_RIGHT) {
       nextWord();
-      gluLookAt( 600*cos(30),0,600*sin(30), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
     } else if (key == GLUT_KEY_LEFT) {
     }
 
@@ -479,6 +478,7 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
 // Desc: Draws the next word and initiates any effects related to that word
 //-----------------------------------------------------------------------------
 void nextWord() {
-
+  Vector3D loc = Globals::text->loc;
+  Globals::text->loc.set(loc.x-100,loc.y,loc.z);
   cerr << "Word";
 }
