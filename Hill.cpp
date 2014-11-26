@@ -214,7 +214,7 @@ int main( int argc, char ** argv )
     Globals::sim = new BKSim();
 
     // Draw sequencer at start
-    //drawTerrain();
+    drawTerrain();
 
     char * wav = "Data/mymonth.wav";
     LoadWavFile(wav);
