@@ -172,7 +172,7 @@ bool SndFileSrc::synthesize2( SAMPLE * output, int numFrames )
 }
 
 // synthesize the next buffer (stereo)
-bool SndFileSrc::synthesize2( SAMPLE * output, SAMPLE * input, int numFrames )
+bool SndFileSrc::synthesize2( SAMPLE * output, SAMPLE * input, int numFrames, int size )
 {
   // debug
   // cerr << "rate: " << m_rate << " playhead: " << m_playHead << endl;
@@ -182,12 +182,13 @@ bool SndFileSrc::synthesize2( SAMPLE * output, SAMPLE * input, int numFrames )
   for( int i = 0; i < numFrames; i++ )
   {
     // have we reached EOF
-    if( m_rate >= 0 && m_playHead >= numFrames ) return false;
+    if( m_rate >= 0 && m_playHead >= size ) return false;
     if( m_rate < 0 && m_playHead < 0 ) return false;
 
     // copy next frame
     //cerr << (int)(m_playHead+.5)*m_channels << endl;
     output[i*m_channels] = m_gain * input[(int)(m_playHead+.5)*m_channels];
+    
     if( m_channels == 2 )
       output[i*m_channels+1] = m_gain * input[(int)(m_playHead+.5)*m_channels+1];
       // increment by 'rate' frame

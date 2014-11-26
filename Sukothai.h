@@ -21,8 +21,12 @@ class Sukothai
   SAMPLE * input;
 
 public:
-
+  // Preferred constructor takes in signal, number of Sukothai iterations
+  // and size of the signal in frames. The number of samples in the signal
+  // is equal to size * the number of channels.
   Sukothai(SAMPLE * in, int iterations, int size);
+
+  // Courtesy constructors
   Sukothai () { Sukothai(NULL, 10, 0); }
   Sukothai(int iterations) { Sukothai(NULL, iterations, 0); }
   ~Sukothai();
@@ -30,6 +34,7 @@ public:
 public:
   void setInput(SAMPLE * in, int frames);
   SAMPLE * getBuffer(int m);
+  // Returns the size of the audio buffers in iters in terms of frames
   int getOutputSize();
   int numBuffs();
 

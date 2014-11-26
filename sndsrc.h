@@ -41,7 +41,7 @@ public:
     // synthesize the next buffer (stereo)
     bool synthesize2( SAMPLE * output, int numFrames );
     // synthesize the next buffer (stereo) from an input buffer
-    bool synthesize2( SAMPLE * output, SAMPLE * input, int numFrames );
+    bool synthesize2( SAMPLE * output, SAMPLE * input, int numFrames, int size );
     // return wav buffer
     SAMPLE * getAudio();
 
