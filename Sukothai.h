@@ -9,7 +9,7 @@ using namespace std;
 #define SAMPLE float
 #define FRAMESIZE 512
 #define THE_SRATE 44100
-#define RANDOMWIN .5
+#define RANDOMWIN 1
 
 //typedef void (*Callback)(int, int);
 

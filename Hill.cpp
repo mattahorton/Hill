@@ -216,7 +216,7 @@ int main( int argc, char ** argv )
     // Draw sequencer at start
     drawTerrain();
 
-    char * wav = "Data/mymonth.wav";
+    char * wav = "Data/mymonthlong.wav";
     LoadWavFile(wav);
 
     // Start Audio

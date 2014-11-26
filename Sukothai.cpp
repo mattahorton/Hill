@@ -9,7 +9,6 @@ Sukothai::Sukothai(SAMPLE * in, int iterations, int size) {
   maxIter = iterations;
   numFrames = size;
   if(in != NULL) setInput(in, numFrames);
-  //cerr << numFrames << endl;
 }
 
 Sukothai::~Sukothai()
@@ -56,7 +55,7 @@ void Sukothai::setInput(SAMPLE * in, int frames) {
 
   for(int i = 0; i < maxIter; i++) {
     // Get new delay
-    delay = (int)(distribution(generator)*THE_SRATE);
+    delay = (int)(distribution(generator)*THE_SRATE*2);
 
     //Zero out current buffer
     SAMPLE * current_buffer = new SAMPLE[newSize];
@@ -82,8 +81,8 @@ void Sukothai::setInput(SAMPLE * in, int frames) {
 
     //copy in new vals
     for (int k = 0; k < currentMonoSize; k++) {
-      if(k+startl > 0) current_buffer[k+startl] = current_buffer[k+startl] + mono[k];
-      if(k+startr+1 > 0) current_buffer[k+startr+1] = current_buffer[k+startr] + mono[k];
+      if((k*2+startl > 0) && (k*2+startl < newSize)) current_buffer[k*2+startl] = mono[k];
+      if(k*2+startr+1 > 0 && (k*2+startr+1 < newSize)) current_buffer[k*2+startr+1] = mono[k];
     }
 
     Sukothai::iters.push_back(current_buffer);

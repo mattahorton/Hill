@@ -434,7 +434,7 @@ void YText::render()
     // draw the string
     // Set the font size and render a small text.
     font.FaceSize(144);
-    font.Render("Hello World!");
+    font.Render("Hello World! This is a really long piece of text just to test");
 
     //glEnable(GL_LIGHTING);
     // enable depth test

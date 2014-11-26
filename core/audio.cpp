@@ -37,7 +37,7 @@ static void audio_callback( SAMPLE * buffer, unsigned int numFrames, void * user
     // cerr << Globals::sukothai->numBuffs() << endl;
     // cerr << Globals::sukothai->getOutputSize() << endl;
     if((Globals::sukothai->getOutputSize() != 0) && (Globals::sukothai->numBuffs() > 0)) {
-      input = Globals::sukothai->getBuffer(0);
+      input = Globals::sukothai->getBuffer(9);
       Globals::sndfile.synthesize2( buffer, input, numFrames, Globals::sukothai->getOutputSize() );
     }
 
