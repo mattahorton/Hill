@@ -18,9 +18,6 @@ void ScoreParser::dumpContents(){
 }
 
 void ScoreParser::initScore() {
-  assert(score.IsObject());    // Document is a JSON value represents the root of DOM. Root can be either an object or array.
-
-  assert(score.HasMember("track"));
-  assert(score["track"].IsString());
-  track = score["track"].GetString();
+  Value::MemberIterator trackMember = score.FindMember("track");
+  track = trackMember->value.GetString();
 }

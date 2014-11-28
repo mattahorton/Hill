@@ -56,7 +56,7 @@ void mouseFunc( int button, int state, int x, int y );
 void help();
 void drawTerrain();
 void LoadRawFile(char * strName, size_t nSize, uint8_t *pHeightMap);
-void LoadWavFile(char * strName);
+void LoadWavFile(const char * strName);
 void LoadJSONFile(char * strName);
 int Height(uint8_t *pHeightMap, float x, float z);
 
@@ -85,6 +85,8 @@ GLsizei g_height, g_width = 400;
 // Camera position and orientation
 float camX = 500, camY = 200, camZ = 400;
 float camAngle = 200;
+
+Value lines;
 
 
 //-----------------------------------------------------------------------------
@@ -143,8 +145,12 @@ void LoadJSONFile(char * strName)
     Globals::parser->score.ParseStream<0, UTF8<>, FileReadStream>(is);
     // init score
     Globals::parser->initScore();
+    // get poem lines
+    lines = Globals::parser->score["lines"];
     // dump score contents
-    Globals::parser->dumpContents();
+    // Globals::parser->dumpContents();
+    // set string to first line
+    //Globals::text->set(lines[0]["text"].GetString());
 
     // After We Read The Data, It's A Good Idea To Check If Everything Read Fine
     if (ferror( pFile ))
@@ -160,7 +166,7 @@ void LoadJSONFile(char * strName)
 // Name: LoadWavFile( )
 // Desc: load Wav file
 //-----------------------------------------------------------------------------
-void LoadWavFile(char * strName) {
+void LoadWavFile(const char * strName) {
   // go
   if( !Globals::sndfile.read( strName ) )
     exit( 1 );
@@ -220,7 +226,7 @@ int main( int argc, char ** argv )
     // Draw sequencer at start
     drawTerrain();
 
-    char * wav = Globals::parser->track;
+    const char * wav = Globals::parser->track;
     LoadWavFile(wav);
 
     // Start Audio
@@ -305,9 +311,7 @@ void reshapeFunc( GLsizei w, GLsizei h )
     // load the identity matrix
     glLoadIdentity( );
     // position the view point
-    //gluLookAt( 0,600,0,0.0f, -1.0f, -10.0f, 0.0f, 1.0f, 0.0f );
     gluLookAt( camX, camY, camZ, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
-    //gluLookAt( 1000,1000,0, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
 }
 
 
@@ -466,8 +470,8 @@ void drawTerrain() {
 
   Globals::sim->root().addChild(entity);
 
-  // entity->addChild(ter);
-  // entity->addChild(terLine);
+  entity->addChild(ter);
+  entity->addChild(terLine);
   Globals::sim->root().addChild(text);
   Globals::terrain = entity;
   Globals::text = text;

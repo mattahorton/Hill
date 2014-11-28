@@ -19,7 +19,6 @@ class ScoreParser
   public:
     Document score;
     const char * track;
-
 };
 
 #endif
