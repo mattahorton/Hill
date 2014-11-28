@@ -1,4 +1,131 @@
 {
-  "effects": [],
-  "lines": ["There we", "go"]
+  "track": "Data/mymonth.wav",
+  "lines": [
+    {
+      "text": "Crescendo",
+      "time": 2
+    },
+    {
+      "text":"The instability of this whole note makes my ears ring",
+      "time":5
+    },
+    {
+      "text":"Melisma",
+      "time":1.5
+    },
+    {
+      "text":"Moving, bouncing one to another",
+      "time":3
+    },
+    {
+      "text":"Swept away on a syllable",
+      "time":3
+    },
+    {
+      "text":"I can sing that",
+      "time":2
+    },
+    {
+      "text":"That's more...my tempo",
+      "time":5
+    },
+    {
+      "text":"",
+      "time":2
+    },
+    {
+      "text":"But this whole note",
+      "time":2
+    },
+    {
+      "text":"Tied across multiple bars",
+      "time":3
+    },
+    {
+      "text":"Forming the basis for a complex harmony I can't even hear yet",
+      "time":4
+    },
+    {
+      "text":"It is suffocating.",
+      "time":3
+    },
+    {
+      "text":"",
+      "time":2
+    },
+    {
+      "text":"No wonder I've fallen flat",
+      "time":3
+    },
+
+    {
+      "text":"I only lose things when I'm holding them.",
+      "time":4
+    },
+    {
+      "text":"",
+      "time":3
+    },
+    {
+      "text":"But here she comes",
+      "time":2
+    },
+
+    {
+      "text":"Crescendo",
+      "time":3
+    },
+    {
+      "text":"",
+      "time":2
+    },
+    {
+      "text":"She is beating faster again",
+      "time":3
+    },
+    {
+      "text":"Percussive consonaants spew from mine lips",
+      "time":5
+    },
+    {
+      "text":"Heartbeat chambers fill with knuckled rapping on wooden walls",
+      "time":6
+    },
+    {
+      "text":"We are weightless in the sound spire",
+      "time":4
+    },
+    {
+      "text":"Bell rings joyous when you chime him",
+      "time":4
+    },
+    {
+      "text":"Brass hearts blow triplets into marble rooms",
+      "time":5
+    },
+    {
+      "text":"The tick-ticking is not electric",
+      "time":3
+    },
+    {
+      "text":"It is necessity",
+      "time":2
+    },
+    {
+      "text":"He has been waiting for his cue",
+      "time":4
+    },
+    {
+      "text":"I'll find new reasons when you're close again",
+      "time":7
+    },
+    {
+      "text":"I only lose things when I'm holding them",
+      "time":5
+    },
+    {
+      "text":"",
+      "time":10
+    }
+  ]
 }
