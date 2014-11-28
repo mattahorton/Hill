@@ -403,8 +403,18 @@ void YText::fade( GLfloat _alpha, GLfloat slew )
 //-----------------------------------------------------------------------------
 void YText::update( YTimeInterval dt )
 {
+    YEntity::update(dt);
+
     // interpolate
     m_iAlpha.interp( dt );
+
+    // interp
+    iRGB.interp( dt );
+    iLoc.interp( dt );
+
+    // update
+    col = iRGB.actual();
+    loc = iLoc.actual();
 
     // set it
     alpha = m_iAlpha.value;

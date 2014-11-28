@@ -176,6 +176,10 @@ public:
     // set location with centering
     void setCenterLocation( const Vector3D & v );
 
+    // slew
+    iSlew3D iRGB;
+    iSlew3D iLoc;
+
 public:
     // fade to a particular alpha
     virtual void fade( GLfloat _alpha, GLfloat slew = 1 );
