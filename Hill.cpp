@@ -134,8 +134,16 @@ void LoadJSONFile(char * strName)
     }
 
     char buffer[65536];
+
+    // initialize ScoreParser
+    Globals::parser = new ScoreParser();
+    // create file read stream
     rapidjson::FileReadStream is(pFile, buffer, sizeof(buffer));
+    // parse file read stream
     Globals::parser->score.ParseStream<0, UTF8<>, FileReadStream>(is);
+    // init score
+    Globals::parser->initScore();
+    // dump score contents
     Globals::parser->dumpContents();
 
     // After We Read The Data, It's A Good Idea To Check If Everything Read Fine
@@ -203,9 +211,6 @@ int main( int argc, char ** argv )
     // initialize GLUT
     glutInit( &argc, argv );
 
-    // initialize ScoreParser
-    Globals::parser = new ScoreParser();
-
     // init gfx
     initGfx();
 
@@ -215,7 +220,7 @@ int main( int argc, char ** argv )
     // Draw sequencer at start
     drawTerrain();
 
-    char * wav = "Data/mymonthlong.wav";
+    char * wav = Globals::parser->track;
     LoadWavFile(wav);
 
     // Start Audio

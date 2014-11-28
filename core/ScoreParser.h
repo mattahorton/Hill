@@ -14,9 +14,11 @@ class ScoreParser
   public:
     ScoreParser ();
     void dumpContents();
+    void initScore();
 
   public:
     Document score;
+    const char * track;
 
 };
 
