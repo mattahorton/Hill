@@ -71,6 +71,8 @@ public:
 
     static Sukothai * sukothai;
 
+    static int currentLine;
+
     // Shockwave globals
     static std::array<int,5> waves;
 

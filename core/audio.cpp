@@ -21,6 +21,7 @@ using namespace std;
 
 XMutex g_mutex;
 SAMPLE * input;
+int g_sample = 0;
 
 //-----------------------------------------------------------------------------
 // name: audio_callback
@@ -42,6 +43,11 @@ static void audio_callback( SAMPLE * buffer, unsigned int numFrames, void * user
     }
 
     // Globals::sndfile.synthesize2( buffer, numFrames);
+
+    for (int i = 0; i < numFrames; i++) {
+      Globals::mediator->updateCount(g_sample);
+      g_sample++;
+    }
 
 }
 

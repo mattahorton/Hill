@@ -31,9 +31,13 @@ YEntity * Globals::terrain = NULL;
 // Global SndFileSrc
 SndFileSrc Globals::sndfile;
 
+// Globals Sukothai effect
 Sukothai * Globals::sukothai = NULL;
 
+// Global text object
 YText * Globals::text = NULL;
+
+int Globals::currentLine = 0;
 
 // Shockwave ints
 std::array<int,5> Globals::waves = {-1,-1,-1,-1,-1};

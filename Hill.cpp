@@ -24,6 +24,7 @@
 #include <FTGL/ftgl.h>
 #include "ScoreParser.h"
 #include "SndSrc.h"
+#include "Mediator.h"
 using namespace std;
 
 #ifdef __MACOSX_CORE__
@@ -59,6 +60,7 @@ void LoadRawFile(char * strName, size_t nSize, uint8_t *pHeightMap);
 void LoadWavFile(const char * strName);
 void LoadJSONFile(char * strName);
 int Height(uint8_t *pHeightMap, float x, float z);
+void nextLine(int a, int b);
 
 // our datetype
 #define SAMPLE float
@@ -151,6 +153,9 @@ void LoadJSONFile(char * strName)
     // Globals::parser->dumpContents();
     // set string to first line
     //Globals::text->set(lines[0]["text"].GetString());
+
+    Globals::mediator = new Mediator();
+    Globals::mediator->registerSingleCallback(5*THE_SRATE, &nextLine);
 
     // After We Read The Data, It's A Good Idea To Check If Everything Read Fine
     if (ferror( pFile ))
@@ -478,7 +483,10 @@ void drawTerrain() {
 }
 
 
-
+//-----------------------------------------------------------------------------
+// Name: Height()
+// Desc: Get terrain height
+//-----------------------------------------------------------------------------
 int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height From A Height Map Index
 {
     // Translate the world coordinates to array indices
@@ -486,4 +494,13 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
     int row = int(z / STEP_SIZE) % MAP_SIZE;
 
     return pHeightMap[(row * MAP_SIZE) + col];			// Index Into Our Height Array And Return The Height
+}
+
+//-----------------------------------------------------------------------------
+// Name: nextLine()
+// Desc: initiate the next line of the poem
+//-----------------------------------------------------------------------------
+void nextLine(int a, int b) {
+  Globals::currentLine++;
+  cerr << Globals::currentLine << endl;
 }
