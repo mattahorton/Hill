@@ -73,6 +73,10 @@ public:
 
     static int currentLine;
 
+    static bool started;
+
+    static std::vector<std::string> lineStrings;
+
     // Shockwave globals
     static std::array<int,5> waves;
 

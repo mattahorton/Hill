@@ -326,10 +326,12 @@ void YText::set( const string & text )
 {
     // copy
     m_text = text;
+    cerr << m_text.c_str() << endl;
+    const char * datText = m_text.c_str();
+    // font.FaceSize(144);
+    // m_text_length = font.Advance(datText);
 
-    // compute length
-    m_length = .001 * glutStrokeLength( GLUT_STROKE_ROMAN,
-                                        (const unsigned char *)text.c_str() );
+    // cerr << m_text_length << endl;
 }
 
 
@@ -444,7 +446,7 @@ void YText::render()
     // draw the string
     // Set the font size and render a small text.
     font.FaceSize(144);
-    font.Render("Hello World! This is a really long piece of text just to test");
+    font.Render(m_text.c_str());
 
     //glEnable(GL_LIGHTING);
     // enable depth test
@@ -460,23 +462,23 @@ void YText::render()
 // name: drawString()
 // desc: string rendering method
 //-----------------------------------------------------------------------------
-void YText::drawString( const std::string & text )
-{
-    // get string length
-    GLint len = (GLint)text.length();
-    // get c string
-    const char * str = text.c_str();
-
-    // push
-    glPushMatrix();
-    // scale to be smaller
-    glScalef( .001f, .001f, .001f );
-    // draw each character
-    for( int i = 0; i < len; i++ )
-        glutStrokeCharacter( GLUT_STROKE_ROMAN, str[i] );
-    // pop
-    glPopMatrix();
-}
+// void YText::drawString( const std::string & text )
+// {
+//     // get string length
+//     GLint len = (GLint)text.length();
+//     // get c string
+//     const char * str = text.c_str();
+//
+//     // push
+//     glPushMatrix();
+//     // scale to be smaller
+//     glScalef( .001f, .001f, .001f );
+//     // draw each character
+//     for( int i = 0; i < len; i++ )
+//         glutStrokeCharacter( GLUT_STROKE_ROMAN, str[i] );
+//     // pop
+//     glPopMatrix();
+// }
 
 
 

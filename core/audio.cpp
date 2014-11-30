@@ -34,21 +34,19 @@ static void audio_callback( SAMPLE * buffer, unsigned int numFrames, void * user
     // zero out for output
     memset( buffer, 0, sizeof(SAMPLE)*numFrames*XAudioIO::numChannels() );
 
-    // cerr << Globals::sukothai->getOutputSize() << " sizzze" << endl;
-    // cerr << Globals::sukothai->numBuffs() << endl;
-    // cerr << Globals::sukothai->getOutputSize() << endl;
-    if((Globals::sukothai->getOutputSize() != 0) && (Globals::sukothai->numBuffs() > 0)) {
-      input = Globals::sukothai->getBuffer(9);
-      Globals::sndfile.synthesize2( buffer, input, numFrames, Globals::sukothai->getOutputSize() );
+    if(Globals::started) {
+      if((Globals::sukothai->getOutputSize() != 0) && (Globals::sukothai->numBuffs() > 0)) {
+        input = Globals::sukothai->getBuffer(9);
+        Globals::sndfile.synthesize2( buffer, input, numFrames, Globals::sukothai->getOutputSize() );
+      }
+
+      // Globals::sndfile.synthesize2( buffer, numFrames);
+      g_sample = Globals::sndfile.playhead();
+      for (int i = 0; i < numFrames; i++) {
+        Globals::mediator->updateCount(g_sample);
+        g_sample++;
+      }
     }
-
-    // Globals::sndfile.synthesize2( buffer, numFrames);
-
-    for (int i = 0; i < numFrames; i++) {
-      Globals::mediator->updateCount(g_sample);
-      g_sample++;
-    }
-
 }
 
 

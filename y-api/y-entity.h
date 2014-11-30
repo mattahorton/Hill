@@ -173,6 +173,8 @@ public:
     void setStretch( GLfloat factor );
     // get the length in gl units
     GLfloat getLength() const { return m_length; }
+    // get length in FTPoint units
+    float getTextLength() const {return m_text_length; }
     // set location with centering
     void setCenterLocation( const Vector3D & v );
 
@@ -195,6 +197,8 @@ public:
 protected:
     // the text
     std::string m_text;
+    // font text length
+    float m_text_length;
     // the width
     GLfloat m_width;
     // the length

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <vector>
 
-typedef void (*Callback)(int, int);
+typedef void (*Callback)();
 
 class Mediator
 {

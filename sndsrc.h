@@ -34,6 +34,8 @@ public:
     void rewind( int position = 0 );
     // get number of frames in file
     int getSize();
+    // get playhead
+    const int playhead() { return m_playHead; }
     // rate
     void rate( SAMPLE rate );
     // gain (volume)

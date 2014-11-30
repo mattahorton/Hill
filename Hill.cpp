@@ -60,7 +60,7 @@ void LoadRawFile(char * strName, size_t nSize, uint8_t *pHeightMap);
 void LoadWavFile(const char * strName);
 void LoadJSONFile(char * strName);
 int Height(uint8_t *pHeightMap, float x, float z);
-void nextLine(int a, int b);
+void nextLine();
 
 // our datetype
 #define SAMPLE float
@@ -88,8 +88,7 @@ GLsizei g_height, g_width = 400;
 float camX = 500, camY = 200, camZ = 400;
 float camAngle = 200;
 
-Value lines;
-
+std::vector<float> lineTimes;
 
 //-----------------------------------------------------------------------------
 // Name: LoadRawFile( )
@@ -147,15 +146,21 @@ void LoadJSONFile(char * strName)
     Globals::parser->score.ParseStream<0, UTF8<>, FileReadStream>(is);
     // init score
     Globals::parser->initScore();
-    // get poem lines
-    lines = Globals::parser->score["lines"];
-    // dump score contents
-    // Globals::parser->dumpContents();
-    // set string to first line
-    //Globals::text->set(lines[0]["text"].GetString());
-
+    // instantiate mediator
     Globals::mediator = new Mediator();
-    Globals::mediator->registerSingleCallback(5*THE_SRATE, &nextLine);
+
+    // Get lines and their times
+    const Value& lines = Globals::parser->score["lines"];
+    assert(lines.IsArray());
+    string l;
+    float t = 0;
+    for (SizeType i = 0; i < lines.Size(); i++) {
+      Globals::lineStrings.push_back(lines[i]["text"].GetString());
+      t = (float)lines[i]["time"].GetDouble() + t;
+      lineTimes.push_back(t);
+      Globals::mediator->registerSingleCallback((int)(lineTimes[i]*THE_SRATE), &nextLine);
+    }
+
 
     // After We Read The Data, It's A Good Idea To Check If Everything Read Fine
     if (ferror( pFile ))
@@ -333,6 +338,9 @@ void keyboardFunc( unsigned char key, int x, int y )
 
     switch( key )
     {
+        case ' ': // space
+            Globals::started = true;
+            break;
         case 27: // escape
             exit(1);
             break;
@@ -374,6 +382,7 @@ void specialFunc(int key, int x, int y) {
     if (key == GLUT_KEY_UP) {
     } else if (key == GLUT_KEY_DOWN) {
     } else if (key == GLUT_KEY_RIGHT) {
+      nextLine();
     } else if (key == GLUT_KEY_LEFT) {
     }
 
@@ -437,12 +446,14 @@ void displayFunc( )
     // clear the color and depth buffers
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    iSlew3D loc = Globals::text->iLoc;
-    Globals::text->iLoc.update(
-    Vector3D::Vector3D(loc.slewX().value-100,loc.actual().y,loc.actual().z)
-    ,1);
+    if(Globals::started) {
+      iSlew3D loc = Globals::text->iLoc;
+      Globals::text->iLoc.update(
+      Vector3D::Vector3D(loc.slewX().value-100,loc.actual().y,loc.actual().z)
+      ,1);
 
-    if (loc.slewX().value < -2000) Globals::text->fade(0.0f,1.2);
+      if (loc.slewX().value < -2000) Globals::text->fade(0.0f,1.2);
+    }
 
     // cascade simulation
     Globals::sim->systemCascade();
@@ -464,6 +475,7 @@ void drawTerrain() {
   YTerrain * terLine = new YTerrain(g_HeightMap, false, true);
   YText * text = new YText(0.0f);
 
+  text->set("");
   text->iLoc.updateSet(Vector3D::Vector3D(0,100,0));
   text->iRGB.updateSet(Vector3D::Vector3D(1,1,1));
   text->fade(1.0f,.2);
@@ -500,7 +512,12 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
 // Name: nextLine()
 // Desc: initiate the next line of the poem
 //-----------------------------------------------------------------------------
-void nextLine(int a, int b) {
+void nextLine() {
+  Globals::text->fade(0.0f,0);
+  if (Globals::currentLine < Globals::lineStrings.size()){
+    Globals::text->iLoc.updateSet(Vector3D::Vector3D(0,100,0));
+    Globals::text->set(Globals::lineStrings.at(Globals::currentLine));
+    Globals::text->fade(1.0f,.2);
+  }
   Globals::currentLine++;
-  cerr << Globals::currentLine << endl;
 }

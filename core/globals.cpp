@@ -39,6 +39,10 @@ YText * Globals::text = NULL;
 
 int Globals::currentLine = 0;
 
+bool Globals::started = false;
+
+std::vector<std::string> Globals::lineStrings;
+
 // Shockwave ints
 std::array<int,5> Globals::waves = {-1,-1,-1,-1,-1};
 

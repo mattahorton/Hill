@@ -32,7 +32,7 @@ void Mediator::updateCount(int sampleCount){
     cb = singleCallbacks.at(i);
 
     if (sampleCount == ft) {
-      cb(0,0);
+      cb();
     }
 
   }
