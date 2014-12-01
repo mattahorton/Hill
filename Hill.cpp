@@ -269,13 +269,13 @@ void initGfx()
     glutCreateWindow( "Hill" );
 
     char * file = "Data/mountains.raw";
-    char * poem = "Data/poem.json";
+    char * poem = "Data/poem2.json";
 
     //Read our .RAW file, store it in g_HeightMap
     LoadRawFile(file, MAP_SIZE * MAP_SIZE, g_HeightMap);
     LoadJSONFile(poem);
 
-    camY = Height(g_HeightMap, camX, camZ) + 200;
+    camY = Height(g_HeightMap, camX, camZ) + 250;
 
     // set the idle function - called when idle
     glutIdleFunc( idleFunc );
@@ -386,7 +386,7 @@ void specialFunc(int key, int x, int y) {
     if (key == GLUT_KEY_UP) {
     } else if (key == GLUT_KEY_DOWN) {
     } else if (key == GLUT_KEY_RIGHT) {
-      //nextLine();
+      nextLine();
     } else if (key == GLUT_KEY_LEFT) {
     }
 
@@ -453,7 +453,7 @@ void displayFunc( )
     if(Globals::started) {
       iSlew3D loc = Globals::text->iLoc;
 
-      if (loc.slewX().value < -Globals::text->getTextLength() - 2000) Globals::text->fade(0.0f,6);
+      if (loc.slewX().value < - 2000) Globals::text->fade(0.0f,.4);
     }
 
     // cascade simulation
@@ -521,12 +521,12 @@ void nextLine() {
     Globals::text->iLoc.updateSet(Vector3D::Vector3D(0,100,0));
     Globals::text->set(Globals::lineStrings.at(Globals::currentLine));
     Globals::text->iLoc.update(
-      Vector3D::Vector3D(-Globals::text->getTextLength()-2001,loc.actual().y,loc.actual().z),
-      iSlew3D::slewForDuration(lineTimes.at(Globals::currentLine)));
+      Vector3D::Vector3D(/*-Globals::text->getTextLength()-2001*/-2500,loc.actual().y,loc.actual().z),
+      /*iSlew3D::slewForDuration(lineTimes.at(Globals::currentLine))*/0.8f);
     Globals::text->fade(1.0f,1);
     // The text length is for the previous line :/
-    cerr << Globals::text->getTextLength()<< endl;
-    cerr << -Globals::text->getTextLength()-2000 << endl;
+    // cerr << Globals::text->getTextLength()<< endl;
+    // cerr << -Globals::text->getTextLength()-2000 << endl;
   }
   Globals::currentLine++;
 }

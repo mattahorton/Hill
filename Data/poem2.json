@@ -1,0 +1,103 @@
+{
+  "track": "Data/mymonthlong.wav",
+  "lines": [
+    {
+      "text": "Hey people of 256a",
+      "time": 2
+    },
+    {
+      "text":"This is a test poem",
+      "time":2
+    },
+    {
+      "text":"To show the capability",
+      "time":2
+    },
+    {
+      "text":"Of my program, Hill",
+      "time":2
+    },
+    {
+      "text":"This poem is in JSON",
+      "time":2
+    },
+    {
+      "text":"Hill, loaded it in",
+      "time":2
+    },
+    {
+      "text":"Along with times for",
+      "time":2
+    },
+    {
+      "text":"Each line to display.",
+      "time":2
+    },
+    {
+      "text":"Right now each line is",
+      "time":2
+    },
+    {
+      "text":"About the same length",
+      "time":2
+    },
+    {
+      "text":"and displaying for the",
+      "time":2
+    },
+    {
+      "text":"same amount of time.",
+      "time":2
+    },
+    {
+      "text":"                      ",
+      "time":2
+    },
+    {
+      "text":"There's this new effect!",
+      "time":2
+    },
+
+    {
+      "text":"It's by Carl Stone.     ",
+      "time":2
+    },
+    {
+      "text":"It's called Sukothai.",
+      "time":2
+    },
+    {
+      "text":"Jonathan Abel showed",
+      "time":2
+    },
+
+    {
+      "text":"me all about it, and ",
+      "time":2
+    },
+    {
+      "text":"I thought it was cool.",
+      "time":2
+    },
+    {
+      "text":"So I implemented it!  ",
+      "time":2
+    },
+    {
+      "text":"Optimization is next! ",
+      "time":2
+    },
+    {
+      "text":"Thanks for watching.  ",
+      "time":2
+    },
+    {
+      "text":"Yes, I know it was required.",
+      "time":2
+    },
+    {
+      "text":"Next time there'll be a real poem, ok? Ok. Thanks.",
+      "time":8
+    }
+  ]
+}
