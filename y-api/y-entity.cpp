@@ -326,12 +326,6 @@ void YText::set( const string & text )
 {
     // copy
     m_text = text;
-    cerr << m_text.c_str() << endl;
-    const char * datText = m_text.c_str();
-    // font.FaceSize(144);
-    // m_text_length = font.Advance(datText);
-
-    // cerr << m_text_length << endl;
 }
 
 
@@ -447,6 +441,7 @@ void YText::render()
     // Set the font size and render a small text.
     font.FaceSize(144);
     font.Render(m_text.c_str());
+    m_text_length = font.Advance(m_text.c_str());
 
     //glEnable(GL_LIGHTING);
     // enable depth test

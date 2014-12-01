@@ -3,7 +3,7 @@
   "lines": [
     {
       "text": "Crescendo",
-      "time": 2
+      "time": 3
     },
     {
       "text":"The instability of this whole note makes my ears ring",
@@ -11,11 +11,11 @@
     },
     {
       "text":"Melisma",
-      "time":1.5
+      "time":2
     },
     {
       "text":"Moving, bouncing one to another",
-      "time":3
+      "time":2
     },
     {
       "text":"Swept away on a syllable",
@@ -27,11 +27,11 @@
     },
     {
       "text":"That's more...my tempo",
-      "time":5
+      "time":3
     },
     {
       "text":"",
-      "time":2
+      "time":1
     },
     {
       "text":"But this whole note",
@@ -84,7 +84,7 @@
       "time":3
     },
     {
-      "text":"Percussive consonaants spew from mine lips",
+      "text":"Percussive consonants spew from mine lips",
       "time":5
     },
     {

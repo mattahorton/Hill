@@ -154,11 +154,14 @@ void LoadJSONFile(char * strName)
     assert(lines.IsArray());
     string l;
     float t = 0;
+
     for (SizeType i = 0; i < lines.Size(); i++) {
       Globals::lineStrings.push_back(lines[i]["text"].GetString());
       t = (float)lines[i]["time"].GetDouble() + t;
       lineTimes.push_back(t);
-      Globals::mediator->registerSingleCallback((int)(lineTimes[i]*THE_SRATE), &nextLine);
+      Globals::mediator->registerSingleCallback((int)(lineTimes[i]*THE_SRATE*2), &nextLine);
+      // cerr << t << endl;
+      // cerr << (int)(lineTimes[i]*THE_SRATE*2) << endl;
     }
 
 
@@ -272,7 +275,7 @@ void initGfx()
     LoadRawFile(file, MAP_SIZE * MAP_SIZE, g_HeightMap);
     LoadJSONFile(poem);
 
-    camY = Height(g_HeightMap, camX, camZ) + 150;
+    camY = Height(g_HeightMap, camX, camZ) + 200;
 
     // set the idle function - called when idle
     glutIdleFunc( idleFunc );
@@ -315,7 +318,7 @@ void reshapeFunc( GLsizei w, GLsizei h )
     // load the identity matrix
     glLoadIdentity( );
     // create the viewing frustum
-    gluPerspective(45.0f, (GLfloat)w/(GLfloat)h, 0.5f, 5000.0f);
+    gluPerspective(50.0f, (GLfloat)w/(GLfloat)h, 0.5f, 5000.0f);
     // set the matrix mode to modelview
     glMatrixMode( GL_MODELVIEW );
     // load the identity matrix
@@ -339,6 +342,7 @@ void keyboardFunc( unsigned char key, int x, int y )
     switch( key )
     {
         case ' ': // space
+            if(!Globals::started) nextLine();
             Globals::started = true;
             break;
         case 27: // escape
@@ -382,7 +386,7 @@ void specialFunc(int key, int x, int y) {
     if (key == GLUT_KEY_UP) {
     } else if (key == GLUT_KEY_DOWN) {
     } else if (key == GLUT_KEY_RIGHT) {
-      nextLine();
+      //nextLine();
     } else if (key == GLUT_KEY_LEFT) {
     }
 
@@ -448,11 +452,8 @@ void displayFunc( )
 
     if(Globals::started) {
       iSlew3D loc = Globals::text->iLoc;
-      Globals::text->iLoc.update(
-      Vector3D::Vector3D(loc.slewX().value-100,loc.actual().y,loc.actual().z)
-      ,1);
 
-      if (loc.slewX().value < -2000) Globals::text->fade(0.0f,1.2);
+      if (loc.slewX().value < -Globals::text->getTextLength() - 2000) Globals::text->fade(0.0f,6);
     }
 
     // cascade simulation
@@ -478,7 +479,6 @@ void drawTerrain() {
   text->set("");
   text->iLoc.updateSet(Vector3D::Vector3D(0,100,0));
   text->iRGB.updateSet(Vector3D::Vector3D(1,1,1));
-  text->fade(1.0f,.2);
 
   ter->sca.set(0.1,0.1,0.1);
   terLine->loc.set(0,1,0);
@@ -513,11 +513,20 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
 // Desc: initiate the next line of the poem
 //-----------------------------------------------------------------------------
 void nextLine() {
+  // This fade isn't finishing before we translate the vector back to the beginning :/
   Globals::text->fade(0.0f,0);
+  iSlew3D loc = Globals::text->iLoc;
+
   if (Globals::currentLine < Globals::lineStrings.size()){
     Globals::text->iLoc.updateSet(Vector3D::Vector3D(0,100,0));
     Globals::text->set(Globals::lineStrings.at(Globals::currentLine));
-    Globals::text->fade(1.0f,.2);
+    Globals::text->iLoc.update(
+      Vector3D::Vector3D(-Globals::text->getTextLength()-2001,loc.actual().y,loc.actual().z),
+      iSlew3D::slewForDuration(lineTimes.at(Globals::currentLine)));
+    Globals::text->fade(1.0f,1);
+    // The text length is for the previous line :/
+    cerr << Globals::text->getTextLength()<< endl;
+    cerr << -Globals::text->getTextLength()-2000 << endl;
   }
   Globals::currentLine++;
 }
