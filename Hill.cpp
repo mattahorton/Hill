@@ -324,7 +324,7 @@ void reshapeFunc( GLsizei w, GLsizei h )
     // load the identity matrix
     glLoadIdentity( );
     // position the view point
-    gluLookAt( camX, camY, camZ, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
+    gluLookAt( camX,camY,camZ, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
 }
 
 
@@ -450,6 +450,12 @@ void displayFunc( )
     // clear the color and depth buffers
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
+    // load the identity matrix
+    glLoadIdentity( );
+
+    // position the view point
+    gluLookAt( camX,camY,camZ, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
+
     if(Globals::started) {
       iSlew3D loc = Globals::text->iLoc;
 
@@ -515,6 +521,7 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
 void nextLine() {
   // This fade isn't finishing before we translate the vector back to the beginning :/
   Globals::text->fade(0.0f,0);
+  // Globals::text->active = false;
   iSlew3D loc = Globals::text->iLoc;
 
   if (Globals::currentLine < Globals::lineStrings.size()){
@@ -524,6 +531,7 @@ void nextLine() {
       Vector3D::Vector3D(/*-Globals::text->getTextLength()-2001*/-2500,loc.actual().y,loc.actual().z),
       /*iSlew3D::slewForDuration(lineTimes.at(Globals::currentLine))*/0.8f);
     Globals::text->fade(1.0f,1);
+    // Globals::text->active = true;
     // The text length is for the previous line :/
     // cerr << Globals::text->getTextLength()<< endl;
     // cerr << -Globals::text->getTextLength()-2000 << endl;
