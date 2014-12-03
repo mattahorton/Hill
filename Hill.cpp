@@ -86,9 +86,10 @@ GLsizei g_height, g_width = 400;
 
 // Camera position and orientation
 float camX = 500, camY = 200, camZ = 400;
-float camAngle = 200;
+float camAngle = atan(camZ/camX);
 // actual vector representing the camera's direction
 float lx=0.0f,lz=-1.0f;
+float r = sqrt(camX*camX+camZ+camZ);
 
 std::vector<float> lineTimes;
 
@@ -385,35 +386,27 @@ void keyboardFunc( unsigned char key, int x, int y )
 // Desc: special key event
 //-----------------------------------------------------------------------------
 void specialFunc(int key, int xx, int yy) {
-    // if (key == GLUT_KEY_UP) {
-    // } else if (key == GLUT_KEY_DOWN) {
-    // } else if (key == GLUT_KEY_RIGHT) {
-    //   nextLine();
-    // } else if (key == GLUT_KEY_LEFT) {
-    // }
 
-    float fraction = 5.0f;
+    float fraction = 1.0f;
+    float speed = 0.1f;
+    float radspeed = 5.0f;
 
     switch (key) {
       case GLUT_KEY_LEFT :
-        camAngle -= 1.0f;
-        lx = sin(camAngle);
-        lz = -cos(camAngle);
+        camAngle -= speed;
         break;
       case GLUT_KEY_RIGHT :
-        camAngle += 1.0f;
-        lx = sin(camAngle);
-        lz = -cos(camAngle);
+        camAngle += speed;
         break;
       case GLUT_KEY_UP :
-        camX += lx * fraction;
-        camZ += lz * fraction;
+        r += radspeed;
         break;
       case GLUT_KEY_DOWN :
-        camX -= lx * fraction;
-        camZ -= lz * fraction;
-      break;
+        r -= radspeed;
+        break;
     }
+    camX = r*sin(camAngle);
+    camZ = r*cos(camAngle);
 
 }
 
@@ -480,7 +473,7 @@ void displayFunc( )
 
     // position the view point
     // Need to work on the point to vector
-    gluLookAt( camX,camY,camZ, lx, 0.0f, lz, 0.0f, 1.0f, 0.0f );
+    gluLookAt( camX,camY,camZ, 0, 0.0f, 0, 0.0f, 1.0f, 0.0f );
 
     if(Globals::started) {
       iSlew3D loc = Globals::text->iLoc;
