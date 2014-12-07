@@ -85,11 +85,12 @@ uint8_t g_HeightMap[MAP_SIZE*MAP_SIZE];    // Holds The Height Map Data ( NEW )
 GLsizei g_height, g_width = 400;
 
 // Camera position and orientation
-float camX = 500, camY = 200, camZ = 400;
-float camAngle = atan(camZ/camX);
-// actual vector representing the camera's direction
-float lx=0.0f,lz=-1.0f;
-float r = sqrt(camX*camX+camZ+camZ);
+iSlew3D cam = iSlew3D(500,200,400);
+//float camX = 500, camY = 200, camZ = 400;
+float camAngle = atan(cam.actual().z/cam.actual().x);
+float r = sqrt(cam.actual().x*cam.actual().x+cam.actual().z*cam.actual().z);
+float persp = 50.0f;
+GLfloat ratioz = 1.0f;
 
 std::vector<float> lineTimes;
 
@@ -278,7 +279,11 @@ void initGfx()
     LoadRawFile(file, MAP_SIZE * MAP_SIZE, g_HeightMap);
     LoadJSONFile(poem);
 
-    camY = Height(g_HeightMap, camX, camZ) + 250;
+    cam.updateSet(
+      Vector3D::Vector3D(
+        cam.slewX().value,
+        Height(g_HeightMap, cam.actual().x, cam.actual().z) + 250,
+        cam.slewZ().value ));
 
     // set the idle function - called when idle
     glutIdleFunc( idleFunc );
@@ -321,13 +326,14 @@ void reshapeFunc( GLsizei w, GLsizei h )
     // load the identity matrix
     glLoadIdentity( );
     // create the viewing frustum
-    gluPerspective(50.0f, (GLfloat)w/(GLfloat)h, 0.5f, 5000.0f);
+    //ratioz = (GLfloat)w/(GLfloat)h;
+    gluPerspective(persp, (GLfloat)w/(GLfloat)h, 0.5f, 5000.0f);
     // set the matrix mode to modelview
     glMatrixMode( GL_MODELVIEW );
     // load the identity matrix
     glLoadIdentity( );
     // position the view point
-    gluLookAt( camX,camY,camZ, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
+    gluLookAt( cam.actual().x,cam.actual().y,cam.actual().z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
 }
 
 
@@ -390,6 +396,7 @@ void specialFunc(int key, int xx, int yy) {
     float fraction = 1.0f;
     float speed = 0.1f;
     float radspeed = 5.0f;
+    Vector3D::Vector3D upd8;
 
     switch (key) {
       case GLUT_KEY_LEFT :
@@ -405,8 +412,9 @@ void specialFunc(int key, int xx, int yy) {
         r -= radspeed;
         break;
     }
-    camX = r*sin(camAngle);
-    camZ = r*cos(camAngle);
+    cerr << r << endl;
+    upd8 = Vector3D::Vector3D(r*sin(camAngle), cam.slewY().goal, r*cos(camAngle));
+    cam.update(upd8,.5);
 
 }
 
@@ -471,9 +479,13 @@ void displayFunc( )
     // load the identity matrix
     glLoadIdentity( );
 
+    cam.interp();
+
+    //gluPerspective(persp, ratioz, 0.5f, 5000.0f);
+
     // position the view point
     // Need to work on the point to vector
-    gluLookAt( camX,camY,camZ, 0, 0.0f, 0, 0.0f, 1.0f, 0.0f );
+    gluLookAt( cam.actual().x,cam.actual().y,cam.actual().z, 0, 0.0f, 0, 0.0f, 1.0f, 0.0f );
 
     if(Globals::started) {
       iSlew3D loc = Globals::text->iLoc;
