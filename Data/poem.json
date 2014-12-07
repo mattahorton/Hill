@@ -3,11 +3,21 @@
   "lines": [
     {
       "text": "Crescendo",
-      "time": 3
+      "time": 3,
+      "cam" : {
+        "x" : 500,
+        "y" : 200,
+        "z" : 400
+      }
     },
     {
       "text":"The instability of this whole note makes my ears ring",
-      "time":5
+      "time":5,
+      "cam" : {
+        "x" : 0,
+        "y" : 200,
+        "z" : 1000
+      }
     },
     {
       "text":"Melisma",
