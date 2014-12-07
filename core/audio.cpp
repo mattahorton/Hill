@@ -30,13 +30,16 @@ int g_sample = 0;
 static void audio_callback( SAMPLE * buffer, unsigned int numFrames, void * userData )
 {
     int channels = XAudioIO::numChannels();
+    int mixBuff = 0;
 
     // zero out for output
     memset( buffer, 0, sizeof(SAMPLE)*numFrames*XAudioIO::numChannels() );
 
+    mixBuff = (int) Globals::mix;
+
     if(Globals::started) {
       if((Globals::sukothai->getOutputSize() != 0) && (Globals::sukothai->numBuffs() > 0)) {
-        input = Globals::sukothai->getBuffer(9);
+        input = Globals::sukothai->getBuffer(mixBuff - 1);
         Globals::sndfile.synthesize2( buffer, input, numFrames, Globals::sukothai->getOutputSize() );
       }
 

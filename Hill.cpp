@@ -61,6 +61,7 @@ void LoadWavFile(const char * strName);
 void LoadJSONFile(char * strName);
 int Height(uint8_t *pHeightMap, float x, float z);
 void nextLine();
+void updateMix(float radius);
 
 // our datetype
 #define SAMPLE float
@@ -300,7 +301,11 @@ void initGfx()
 
     // set clear color
     // set the GL clear color - use when the color buffer is cleared
-    glClearColor( Globals::bgColor.actual().x, Globals::bgColor.actual().y, Globals::bgColor.actual().z, 1.0f );
+    glClearColor(
+      Globals::bgColor.actual().x,
+      Globals::bgColor.actual().y,
+      Globals::bgColor.actual().z,
+      1.0f );
     // enable color material
     glEnable( GL_COLOR_MATERIAL );
     // enable depth test
@@ -333,7 +338,10 @@ void reshapeFunc( GLsizei w, GLsizei h )
     // load the identity matrix
     glLoadIdentity( );
     // position the view point
-    gluLookAt( cam.actual().x,cam.actual().y,cam.actual().z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f );
+    gluLookAt(
+      cam.actual().x,cam.actual().y,cam.actual().z,
+      0.0f, 0.0f, 0.0f,
+      0.0f, 1.0f, 0.0f );
 }
 
 
@@ -480,6 +488,7 @@ void displayFunc( )
     glLoadIdentity( );
 
     cam.interp();
+    updateMix(r);
 
     //gluPerspective(persp, ratioz, 0.5f, 5000.0f);
 
@@ -568,4 +577,18 @@ void nextLine() {
     // cerr << -Globals::text->getTextLength()-2000 << endl;
   }
   Globals::currentLine++;
+}
+
+//-----------------------------------------------------------------------------
+// Name: updateMix()
+// Desc: update the effect mix based on radius
+//-----------------------------------------------------------------------------
+void updateMix(float radius) {
+  if(radius < 400.0f) {
+    Globals::mix = 10.0f;
+  } else if (radius > 700.0f){
+    Globals::mix = 1.0f;
+  } else {
+    Globals::mix = 10.0f - (radius-400.0f)/(300.0f/9);
+  }
 }

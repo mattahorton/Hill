@@ -43,6 +43,8 @@ bool Globals::started = false;
 
 std::vector<std::string> Globals::lineStrings;
 
+float Globals::mix;
+
 // Shockwave ints
 std::array<int,5> Globals::waves = {-1,-1,-1,-1,-1};
 

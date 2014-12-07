@@ -77,6 +77,8 @@ public:
 
     static std::vector<std::string> lineStrings;
 
+    static float mix;
+
     // Shockwave globals
     static std::array<int,5> waves;
 
