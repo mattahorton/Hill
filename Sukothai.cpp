@@ -34,7 +34,7 @@ void Sukothai::cleanup()
 
 void Sukothai::setInput(SAMPLE * in, int frames) {
   // per-iteration additional time in terms of seconds
-  float extraTime = RANDOMWIN*2;
+  float extraTime = RANDOMWIN;
 
   // new buffer size in terms of samples
   int newSize = ((int)(maxIter*extraTime*2*THE_SRATE)+frames*2);

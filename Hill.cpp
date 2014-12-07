@@ -274,7 +274,7 @@ void initGfx()
     glutCreateWindow( "Hill" );
 
     char * file = "Data/mountains.raw";
-    char * poem = "Data/poem2.json";
+    char * poem = "Data/poem.json";
 
     //Read our .RAW file, store it in g_HeightMap
     LoadRawFile(file, MAP_SIZE * MAP_SIZE, g_HeightMap);
