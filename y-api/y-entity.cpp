@@ -439,7 +439,7 @@ void YText::render()
     glScalef( m_stretch, 1, 1 );
     // draw the string
     // Set the font size and render a small text.
-    font.FaceSize(144);
+    font.FaceSize(72);
     font.Render(m_text.c_str());
     m_text_length = font.Advance(m_text.c_str());
 

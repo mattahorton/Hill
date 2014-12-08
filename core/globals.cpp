@@ -43,6 +43,10 @@ bool Globals::started = false;
 
 std::vector<std::string> Globals::lineStrings;
 
+std::vector<float> Globals::lineRadii;
+
+std::vector<float> Globals::lineAngles;
+
 float Globals::mix;
 
 // Shockwave ints

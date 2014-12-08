@@ -77,6 +77,10 @@ public:
 
     static std::vector<std::string> lineStrings;
 
+    static std::vector<float> lineRadii;
+
+    static std::vector<float> lineAngles;
+
     static float mix;
 
     // Shockwave globals

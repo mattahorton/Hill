@@ -5,35 +5,49 @@
       "text": "Crescendo",
       "time": 3,
       "cam" : {
-        "x" : 500,
-        "y" : 200,
-        "z" : 400
+        "r" : 700,
+        "angle" : 0.674740942
       }
     },
     {
       "text":"The instability of this whole note makes my ears ring",
       "time":5,
       "cam" : {
-        "x" : 0,
-        "y" : 200,
-        "z" : 1000
+        "r": 900,
+        "angle" : 0.357889
       }
     },
     {
       "text":"Melisma",
-      "time":2
+      "time":2,
+      "cam" : {
+        "r": 700,
+        "angle" : 6.0
+      }
     },
     {
       "text":"Moving, bouncing one to another",
-      "time":2
+      "time":2,
+      "cam" : {
+        "r": 700,
+        "angle" : 4.5
+      }
     },
     {
       "text":"Swept away on a syllable",
-      "time":3
+      "time":3,
+      "cam" : {
+        "r": 350,
+        "angle" : 4.0
+      }
     },
     {
       "text":"I can sing that",
-      "time":2
+      "time": 2,
+      "cam" : {
+        "r" : 650,
+        "angle" : 3.14159
+      }
     },
     {
       "text":"That's more...my tempo",

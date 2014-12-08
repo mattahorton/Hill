@@ -62,6 +62,7 @@ void LoadJSONFile(char * strName);
 int Height(uint8_t *pHeightMap, float x, float z);
 void nextLine();
 void updateMix(float radius);
+void fadeOut();
 
 // our datetype
 #define SAMPLE float
@@ -161,12 +162,27 @@ void LoadJSONFile(char * strName)
     float t = 0;
 
     for (SizeType i = 0; i < lines.Size(); i++) {
+
+      // Add poem times
       Globals::lineStrings.push_back(lines[i]["text"].GetString());
+
+      // Add camera positions
+      if(lines[i].HasMember("cam")){
+        Globals::lineRadii.push_back((float)lines[i]["cam"]["r"].GetDouble());
+        Globals::lineAngles.push_back((float)lines[i]["cam"]["angle"].GetDouble());
+      } else if (Globals::lineRadii.size() > 0){
+        Globals::lineRadii.push_back(Globals::lineRadii.at(Globals::lineRadii.size()-1));
+        Globals::lineAngles.push_back(Globals::lineAngles.at(Globals::lineAngles.size()-1));
+      } else {
+        Globals::lineRadii.push_back(r);
+        Globals::lineAngles.push_back(camAngle);
+      }
+
+      // add line times and callbacks
       t = (float)lines[i]["time"].GetDouble() + t;
       lineTimes.push_back(t);
       Globals::mediator->registerSingleCallback((int)(lineTimes[i]*THE_SRATE*2), &nextLine);
-      // cerr << t << endl;
-      // cerr << (int)(lineTimes[i]*THE_SRATE*2) << endl;
+      Globals::mediator->registerSingleCallback((int)((lineTimes[i]-1)*THE_SRATE*2), &fadeOut);
     }
 
 
@@ -496,11 +512,7 @@ void displayFunc( )
     // Need to work on the point to vector
     gluLookAt( cam.actual().x,cam.actual().y,cam.actual().z, 0, 0.0f, 0, 0.0f, 1.0f, 0.0f );
 
-    if(Globals::started) {
-      iSlew3D loc = Globals::text->iLoc;
-
-      if (loc.slewX().value < - 2000) Globals::text->fade(0.0f,.4);
-    }
+    Globals::text->iLoc.updateSet(Vector3D::Vector3D((r-500)*sin(camAngle),cam.actual().y-100,(r-500)*cos(camAngle)));
 
     // cascade simulation
     Globals::sim->systemCascade();
@@ -559,18 +571,21 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
 // Desc: initiate the next line of the poem
 //-----------------------------------------------------------------------------
 void nextLine() {
+  camAngle = Globals::lineAngles.at(Globals::currentLine);
+  r = Globals::lineRadii.at(Globals::currentLine);
+  Vector3D::Vector3D upd8 = Vector3D::Vector3D(r*sin(camAngle), cam.slewY().goal, r*cos(camAngle));
+  cam.update(upd8,.1);
   // This fade isn't finishing before we translate the vector back to the beginning :/
   Globals::text->fade(0.0f,0);
   // Globals::text->active = false;
   iSlew3D loc = Globals::text->iLoc;
 
   if (Globals::currentLine < Globals::lineStrings.size()){
-    Globals::text->iLoc.updateSet(Vector3D::Vector3D(0,100,0));
+    // Globals::text->iLoc.updateSet(Vector3D::Vector3D((r-20)*sin(camAngle),cam.actual().y,(r-20)*cos(camAngle)));
     Globals::text->set(Globals::lineStrings.at(Globals::currentLine));
-    Globals::text->iLoc.update(
-      Vector3D::Vector3D(/*-Globals::text->getTextLength()-2001*/-2500,loc.actual().y,loc.actual().z),
-      /*iSlew3D::slewForDuration(lineTimes.at(Globals::currentLine))*/0.8f);
-    Globals::text->fade(1.0f,1);
+    /*Globals::text->iLoc.update(
+      Vector3D::Vector3D(-2500,loc.actual().y,loc.actual().z),0.8f);*/
+    Globals::text->fade(1.0f,.8);
     // Globals::text->active = true;
     // The text length is for the previous line :/
     // cerr << Globals::text->getTextLength()<< endl;
@@ -584,11 +599,15 @@ void nextLine() {
 // Desc: update the effect mix based on radius
 //-----------------------------------------------------------------------------
 void updateMix(float radius) {
-  if(radius < 400.0f) {
-    Globals::mix = 10.0f;
-  } else if (radius > 700.0f){
+  if(radius < 500.0f) {
     Globals::mix = 1.0f;
+  } else if (radius > 700.0f){
+    Globals::mix = 10.0f;
   } else {
-    Globals::mix = 10.0f - (radius-400.0f)/(300.0f/9);
+    Globals::mix = 1.0f + (radius-500.0f)/(200.0f/9);
   }
+}
+
+void fadeOut(){
+  Globals::text->fade(0.0f,iSlew3D::slewForDuration(1)+.5);
 }
