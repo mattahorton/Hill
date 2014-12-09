@@ -178,6 +178,31 @@ void LoadJSONFile(char * strName)
         Globals::lineAngles.push_back(camAngle);
       }
 
+      // Add text offsets
+      if(lines[i].HasMember("offset")){
+        if (lines[i]["offset"].HasMember("x")) {
+          Globals::lineXs.push_back((float)lines[i]["offset"]["x"].GetDouble());
+        } else{
+          Globals::lineXs.push_back(0.0f);
+        }
+
+        if (lines[i]["offset"].HasMember("y")) {
+          Globals::lineYs.push_back((float)lines[i]["offset"]["y"].GetDouble());
+        } else{
+          Globals::lineYs.push_back(0.0f);
+        }
+        if (lines[i]["offset"].HasMember("z")) {
+          Globals::lineZs.push_back((float)lines[i]["offset"]["z"].GetDouble());
+        } else{
+          Globals::lineZs.push_back(0.0f);
+        }
+
+      } else {
+        Globals::lineXs.push_back(0.0f);
+        Globals::lineYs.push_back(0.0f);
+        Globals::lineZs.push_back(0.0f);
+      }
+
       // add line times and callbacks
       t = (float)lines[i]["time"].GetDouble() + t;
       lineTimes.push_back(t);
@@ -520,7 +545,7 @@ void displayFunc( )
     // Need to work on the point to vector
     gluLookAt( cam.actual().x,cam.actual().y,cam.actual().z, 0, 0.0f, 0, 0.0f, 1.0f, 0.0f );
 
-    Globals::text->iLoc.updateSet(Vector3D::Vector3D((r-500)*sin(camAngle)-500,cam.actual().y-100,(r-500)*cos(camAngle)));
+
 
     // cascade simulation
     Globals::sim->systemCascade();
@@ -589,6 +614,22 @@ void nextLine() {
   Globals::text->fade(0.0f,0); // Finish fade immediately if it's not done
   Globals::text->ori.set(0, camAngle*180/3.14159f, 0);
   iSlew3D loc = Globals::text->iLoc;
+  cerr << (r-500)*sin(camAngle)+Globals::lineXs.at(Globals::currentLine)<< endl;
+  Globals::text->iLoc.updateSet(
+    Vector3D::Vector3D(
+      (r-500)*sin(camAngle),
+      cam.actual().y-100,
+      (r-500)*cos(camAngle)
+    )
+  );
+
+  Globals::text->iLoc.update(
+    Vector3D::Vector3D(
+      (r-500)*sin(camAngle)+Globals::lineXs.at(Globals::currentLine),
+      cam.actual().y-100+Globals::lineYs.at(Globals::currentLine),
+      (r-500)*cos(camAngle)+Globals::lineZs.at(Globals::currentLine)
+    ), .5
+  );
 
   if (Globals::currentLine < Globals::lineStrings.size()){
 

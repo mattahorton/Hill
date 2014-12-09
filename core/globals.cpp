@@ -36,16 +36,21 @@ Sukothai * Globals::sukothai = NULL;
 
 // Global text object
 YText * Globals::text = NULL;
-
+// Current line index
 int Globals::currentLine = 0;
-
+// Poem has been started
 bool Globals::started = false;
-
+// The poem lines themselves
 std::vector<std::string> Globals::lineStrings;
 
+// Camera positions
 std::vector<float> Globals::lineRadii;
-
 std::vector<float> Globals::lineAngles;
+
+// Text offsets
+std::vector<float> Globals::lineXs;
+std::vector<float> Globals::lineYs;
+std::vector<float> Globals::lineZs;
 
 float Globals::mix;
 

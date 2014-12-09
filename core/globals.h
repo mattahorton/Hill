@@ -72,14 +72,15 @@ public:
     static Sukothai * sukothai;
 
     static int currentLine;
-
     static bool started;
-
     static std::vector<std::string> lineStrings;
 
     static std::vector<float> lineRadii;
-
     static std::vector<float> lineAngles;
+
+    static std::vector<float> lineXs;
+    static std::vector<float> lineYs;
+    static std::vector<float> lineZs;
 
     static float mix;
 
