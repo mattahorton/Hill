@@ -221,31 +221,87 @@
     },
     {
       "text":"Bell rings joyous when you chime him",
-      "time":2
+      "time":2,
+      "cam" : {
+        "r" : 800,
+        "angle" : 3.5
+      },
+      "offset" : {
+        "x" : 800,
+        "z" : 900
+      }
     },
     {
       "text":"Brass hearts blow triplets into marble rooms",
-      "time":3
+      "time":3,
+      "cam" : {
+        "r" : 559,
+        "angle" : 3.9
+      },
+      "offset" : {
+        "x" : 1100,
+        "z" : 900
+      }
     },
     {
       "text":"The tick-ticking is not electric",
-      "time":3
+      "time":3,
+      "cam" : {
+        "r" : 800,
+        "angle" : 2.4
+      },
+      "offset" : {
+        "x" : 800,
+        "z" : 900
+      }
     },
     {
       "text":"It is necessity",
-      "time":2
+      "time":2,
+      "cam" : {
+        "r" : 800,
+        "angle" : 2.4
+      },
+      "offset" : {
+        "x" : 100,
+        "z" : 100
+      }
     },
     {
       "text":"He has been waiting for his cue",
-      "time":4
+      "time":4,
+      "cam" : {
+        "r" : 800,
+        "angle" : 3.5
+      },
+      "offset" : {
+        "x" : 800,
+        "z" : 900
+      }
     },
     {
       "text":"I'll find new reasons when you're close again",
-      "time":7
+      "time":7,
+      "cam" : {
+        "r" : 800,
+        "angle" : 2.4
+      },
+      "offset" : {
+        "x" : 800,
+        "z" : 900
+      }
     },
     {
       "text":"I only lose things when I'm holding them",
-      "time":5
+      "time":5,
+      "cam" : {
+        "r" : 800,
+        "angle" : 2.4
+      },
+      "offset" : {
+        "x" : -100,
+        "z" : 1500
+      }
     },
     {
       "text":"",
