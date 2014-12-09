@@ -414,6 +414,7 @@ void keyboardFunc( unsigned char key, int x, int y )
               }
             }
             skip = true;
+            nextLine();
             break;
         case '~':
         case '`': // toggle fullscreen
@@ -604,7 +605,8 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
 // Desc: initiate the next line of the poem
 //-----------------------------------------------------------------------------
 void nextLine() {
-
+  float playedRatio = (float)Globals::sndfile.playhead()/(float)Globals::sndfile.getSize();
+  
   // Update cam based on score
   camAngle = Globals::lineAngles.at(Globals::currentLine);
   r = Globals::lineRadii.at(Globals::currentLine);
@@ -614,7 +616,7 @@ void nextLine() {
   Globals::text->fade(0.0f,0); // Finish fade immediately if it's not done
   Globals::text->ori.set(0, camAngle*180/3.14159f, 0);
   iSlew3D loc = Globals::text->iLoc;
-  cerr << (r-500)*sin(camAngle)+Globals::lineXs.at(Globals::currentLine)<< endl;
+
   Globals::text->iLoc.updateSet(
     Vector3D::Vector3D(
       (r-500)*sin(camAngle),
@@ -645,12 +647,12 @@ void nextLine() {
 // Desc: update the effect mix based on radius
 //-----------------------------------------------------------------------------
 void updateMix(float radius) {
-  if(radius < 500.0f) {
+  if(radius < 400.0f) {
     Globals::mix = 1.0f;
-  } else if (radius > 700.0f){
+  } else if (radius > 800.0f){
     Globals::mix = 10.0f;
   } else {
-    Globals::mix = 1.0f + (radius-500.0f)/(200.0f/9);
+    Globals::mix = 1.0f + (radius-400.0f)/(400.0f/9);
   }
 }
 
