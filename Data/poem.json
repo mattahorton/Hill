@@ -86,10 +86,6 @@
       }
     },
     {
-      "text":"",
-      "time":1
-    },
-    {
       "text":"But this whole note",
       "time":2,
       "cam" : {
@@ -153,7 +149,7 @@
     },
     {
       "text":"",
-      "time":3
+      "time":2
     },
     {
       "text":"But here she comes",
@@ -175,32 +171,61 @@
       }
     },
     {
-      "text":"",
-      "time":2
-    },
-    {
       "text":"She is beating faster again",
-      "time":3
+      "time":1.5,
+      "cam" : {
+        "r" : 1100,
+        "angle" : 0
+      },
+      "offset" : {
+        "x" : -600,
+        "z" : -100
+      }
     },
     {
       "text":"Percussive consonants spew from mine lips",
-      "time":5
+      "time":3.5,
+      "cam" : {
+        "r" : 400,
+        "angle" : 2.3562
+      },
+      "offset" : {
+        "x" : 1100,
+        "y" : -75,
+        "z" : 700
+      }
     },
     {
       "text":"Heartbeat chambers fill with knuckled rapping on wooden walls",
-      "time":6
+      "time":4,
+      "cam" : {
+        "r" : 600,
+        "angle" : 2.4
+      },
+      "offset" : {
+        "x" : 1100,
+        "z" : 1500
+      }
     },
     {
       "text":"We are weightless in the sound spire",
-      "time":4
+      "time":2,
+      "cam" : {
+        "r" : 800,
+        "angle" : 2.4
+      },
+      "offset" : {
+        "x" : 800,
+        "z" : 900
+      }
     },
     {
       "text":"Bell rings joyous when you chime him",
-      "time":4
+      "time":2
     },
     {
       "text":"Brass hearts blow triplets into marble rooms",
-      "time":5
+      "time":3
     },
     {
       "text":"The tick-ticking is not electric",
