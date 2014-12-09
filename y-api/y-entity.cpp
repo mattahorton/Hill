@@ -2081,20 +2081,28 @@ void YTerrain::render()
 void YTerrain::DrawVertex(uint8_t *pHeightMap, float x, float z) {
     bool found = false;
     float y = (float) Height(pHeightMap, x + HALF_SIZE, z + HALF_SIZE);
+    float playedRatio = (float)Globals::sndfile.playhead()/(float)Globals::sndfile.getSize();
 
     if (y < minY) {
       minY = y;
-      Globals::bgColor.updateSet(
+      Globals::bgColor.update(
         Vector3D::Vector3D(
-        (50.0f+(Globals::maxAvg*(minY/10)/40.0f))/256.0f,
+        (50.0f+(Globals::maxAvg*(minY/10)/40.0f)-playedRatio*(3.0f/4.0f)*75.0f)/256.0f,
         minY / 256.0f,
-        (100.0f+(Globals::maxAvg/20.0f))/256.0f ));
+        (100.0f+(Globals::maxAvg*(1-playedRatio)/20.0f)-playedRatio*(2.0f/3.0f)*100.0f)/256.0f));
     }
 
     // The higher the greener
     if(bRender) {
+      // cerr << (Globals::sndfile.playhead()/Globals::sndfile.getSize())*100 << endl;
+      // cerr << (100.0f+(Globals::maxAvg/20.0f)-(Globals::sndfile.playhead()/Globals::sndfile.getSize())*100/256.0f) << endl;
       //glColor3f((50.0f+(Globals::maxAvg/4.0f))/256.0f, y / 256.0f, (100.0f+.2*y)/256.0f );
-      glColor3f((50.0f+(Globals::maxAvg*(y/10)/40.0f))/256.0f, y / 256.0f, (100.0f+(Globals::maxAvg/20.0f))/256.0f );
+      glColor3f(
+        (50.0f+(Globals::maxAvg*(y/10)/40.0f)-playedRatio*(3.0f/4.0f)*75.0f)/256.0f,
+        y / 256.0f,
+        (100.0f+(Globals::maxAvg*(1-playedRatio)/20.0f)-playedRatio*(2.0f/3.0f)*100.0f)/256.0f
+      );
+
     } else {
       glColor3f((Globals::maxAvg*(y/10)/40.0f)/256.0f, y / 256.0f, (50.0f+y)/256.0f );
     }
