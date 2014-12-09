@@ -242,24 +242,15 @@ void LoadWavFile(const char * strName) {
 //-----------------------------------------------------------------------------
 void help()
 {
-  //  cerr << "----------------------------------------------------" << endl;
-  //  cerr << "Hill (v1.0)" << endl;
-  //  cerr << "Matt Horton" << endl;
-  //  cerr << "http://ccrma.stanford.edu/~mattah/256a/Hill/" << endl;
-  //  cerr << "----------------------------------------------------" << endl;
-  //  cerr << "Select a step by pressing one of the home keys (a, s, d, f, etc.)" << endl;
-  //  cerr << endl;
-  //  cerr << "Press Enter to turn a step on or off." << endl;
-  //  cerr << endl;
-  //  cerr << "The keys above and below the selection keys modify the value " << endl;
-  //  cerr << "of the current paramater for the step to which they correspond. " << endl;
-  //  cerr << endl;
-  //  cerr << "So, Q and Z will raise and lower pitch, octave, or velocity " << endl;
-  //  cerr << "for the step selected by A." << endl;
-  //  cerr << endl;
-  //  cerr << "Default paramater is pitch. Cycle through parameters using " << endl;
-  //  cerr << "right and left arrows. Up and down arrows move through tracks." << endl;
-  //  cerr << "----------------------------------------------------" << endl;
+   cerr << "----------------------------------------------------" << endl;
+   cerr << "Hill (v1.0)" << endl;
+   cerr << "Matt Horton" << endl;
+   cerr << "http://ccrma.stanford.edu/~mattah/256a/Hill/" << endl;
+   cerr << "----------------------------------------------------" << endl;
+   cerr << "Place 'poem.json' and audio file in 'Data' directory." << endl;
+   cerr << "Press 'space' to start poem." << endl;
+   cerr << "See website for poem schema." << endl;
+   cerr << "----------------------------------------------------" << endl;
 }
 
 
@@ -606,7 +597,7 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
 //-----------------------------------------------------------------------------
 void nextLine() {
   float playedRatio = (float)Globals::sndfile.playhead()/(float)Globals::sndfile.getSize();
-  
+
   // Update cam based on score
   camAngle = Globals::lineAngles.at(Globals::currentLine);
   r = Globals::lineRadii.at(Globals::currentLine);
