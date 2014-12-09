@@ -497,6 +497,14 @@ void idleFunc( )
 //-----------------------------------------------------------------------------
 void displayFunc( )
 {
+
+    Globals::bgColor.interp();
+
+    glClearColor(
+      Globals::bgColor.actual().x,
+      Globals::bgColor.actual().y,
+      Globals::bgColor.actual().z,
+      1.0f );
     // clear the color and depth buffers
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
@@ -512,7 +520,7 @@ void displayFunc( )
     // Need to work on the point to vector
     gluLookAt( cam.actual().x,cam.actual().y,cam.actual().z, 0, 0.0f, 0, 0.0f, 1.0f, 0.0f );
 
-    Globals::text->iLoc.updateSet(Vector3D::Vector3D((r-500)*sin(camAngle),cam.actual().y-100,(r-500)*cos(camAngle)));
+    Globals::text->iLoc.updateSet(Vector3D::Vector3D((r-500)*sin(camAngle)-500,cam.actual().y-100,(r-500)*cos(camAngle)));
 
     // cascade simulation
     Globals::sim->systemCascade();
@@ -531,7 +539,7 @@ void displayFunc( )
 void drawTerrain() {
   YEntity * entity = new YEntity();
   YTerrain * ter = new YTerrain(g_HeightMap, true, false);
-  YTerrain * terLine = new YTerrain(g_HeightMap, false, true);
+  //YTerrain * terLine = new YTerrain(g_HeightMap, false, true);
   YText * text = new YText(0.0f);
 
   text->set("");
@@ -539,14 +547,14 @@ void drawTerrain() {
   text->iRGB.updateSet(Vector3D::Vector3D(1,1,1));
 
   ter->sca.set(0.1,0.1,0.1);
-  terLine->loc.set(0,1,0);
-  terLine->sca.set(0.1,0.1,0.1);
+  //terLine->loc.set(0,1,0);
+  //terLine->sca.set(0.1,0.1,0.1);
   entity->sca.set(1.5,1.2,1.2);
 
   Globals::sim->root().addChild(entity);
 
   entity->addChild(ter);
-  entity->addChild(terLine);
+  //entity->addChild(terLine);
   Globals::sim->root().addChild(text);
   Globals::terrain = entity;
   Globals::text = text;
@@ -571,25 +579,22 @@ int Height(uint8_t *pHeightMap, float x, float z)			// This Returns The Height F
 // Desc: initiate the next line of the poem
 //-----------------------------------------------------------------------------
 void nextLine() {
+
+  // Update cam based on score
   camAngle = Globals::lineAngles.at(Globals::currentLine);
   r = Globals::lineRadii.at(Globals::currentLine);
   Vector3D::Vector3D upd8 = Vector3D::Vector3D(r*sin(camAngle), cam.slewY().goal, r*cos(camAngle));
   cam.update(upd8,.1);
-  // This fade isn't finishing before we translate the vector back to the beginning :/
-  Globals::text->fade(0.0f,0);
-  // Globals::text->active = false;
+
+  Globals::text->fade(0.0f,0); // Finish fade immediately if it's not done
+  Globals::text->ori.set(0, camAngle*180/3.14159f, 0);
   iSlew3D loc = Globals::text->iLoc;
 
   if (Globals::currentLine < Globals::lineStrings.size()){
-    // Globals::text->iLoc.updateSet(Vector3D::Vector3D((r-20)*sin(camAngle),cam.actual().y,(r-20)*cos(camAngle)));
+
+    // Set new text and fade in
     Globals::text->set(Globals::lineStrings.at(Globals::currentLine));
-    /*Globals::text->iLoc.update(
-      Vector3D::Vector3D(-2500,loc.actual().y,loc.actual().z),0.8f);*/
     Globals::text->fade(1.0f,.8);
-    // Globals::text->active = true;
-    // The text length is for the previous line :/
-    // cerr << Globals::text->getTextLength()<< endl;
-    // cerr << -Globals::text->getTextLength()-2000 << endl;
   }
   Globals::currentLine++;
 }

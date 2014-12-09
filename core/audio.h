@@ -15,6 +15,8 @@
 bool audio_init( unsigned int srate, unsigned int frameSize, unsigned channels );
 // start audio
 bool audio_start();
+// get next power of 2
+unsigned long next_power_2(unsigned long n);
 
 
 #endif

@@ -1,5 +1,5 @@
 {
-  "track": "Data/mymonthlong.wav",
+  "track": "Data/Shenandoah.wav",
   "lines": [
     {
       "text": "Crescendo",
@@ -21,7 +21,7 @@
       "text":"Melisma",
       "time":2,
       "cam" : {
-        "r": 700,
+        "r": 300,
         "angle" : 6.0
       }
     },
@@ -29,7 +29,7 @@
       "text":"Moving, bouncing one to another",
       "time":2,
       "cam" : {
-        "r": 700,
+        "r": 200,
         "angle" : 4.5
       }
     },
@@ -45,13 +45,17 @@
       "text":"I can sing that",
       "time": 2,
       "cam" : {
-        "r" : 650,
+        "r" : 400,
         "angle" : 3.14159
       }
     },
     {
       "text":"That's more...my tempo",
-      "time":3
+      "time":3,
+      "cam" : {
+        "r" : 500,
+        "angle" : 3.14159
+      }
     },
     {
       "text":"",
@@ -59,11 +63,19 @@
     },
     {
       "text":"But this whole note",
-      "time":2
+      "time":2,
+      "cam" : {
+        "r" : 900,
+        "angle" : 3.14159
+      }
     },
     {
       "text":"Tied across multiple bars",
-      "time":3
+      "time":3,
+      "cam" : {
+        "r" : 870,
+        "angle" : 1.5
+      }
     },
     {
       "text":"Forming the basis for a complex harmony I can't even hear yet",

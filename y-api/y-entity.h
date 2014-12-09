@@ -718,6 +718,9 @@ public:
     uint8_t m_HeightMap[MAP_SIZE*MAP_SIZE];
     bool bRender;
     bool shockwave;
+
+private:
+    float minY;
 };
 
 

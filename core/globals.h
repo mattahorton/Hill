@@ -83,6 +83,8 @@ public:
 
     static float mix;
 
+    static float maxAvg;
+
     // Shockwave globals
     static std::array<int,5> waves;
 

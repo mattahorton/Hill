@@ -16,12 +16,15 @@
 #include <iterator>
 using namespace std;
 
-
+int getMaxIdx(SAMPLE * buff, int length);
 
 
 XMutex g_mutex;
 SAMPLE * input;
 int g_sample = 0;
+int buffCount = 0;
+int avgSize = 200;
+float * maxs = new float[avgSize];
 
 //-----------------------------------------------------------------------------
 // name: audio_callback
@@ -31,6 +34,7 @@ static void audio_callback( SAMPLE * buffer, unsigned int numFrames, void * user
 {
     int channels = XAudioIO::numChannels();
     int mixBuff = 0;
+    SAMPLE * fftBuff = new SAMPLE[numFrames*XAudioIO::numChannels()];
 
     // zero out for output
     memset( buffer, 0, sizeof(SAMPLE)*numFrames*XAudioIO::numChannels() );
@@ -38,22 +42,54 @@ static void audio_callback( SAMPLE * buffer, unsigned int numFrames, void * user
     mixBuff = (int) Globals::mix;
 
     if(Globals::started) {
+
+      // Play next buffer
       if((Globals::sukothai->getOutputSize() != 0) && (Globals::sukothai->numBuffs() > 0)) {
         input = Globals::sukothai->getBuffer(mixBuff - 1);
         Globals::sndfile.synthesize2( buffer, input, numFrames, Globals::sukothai->getOutputSize() );
+
+        // Get max idx
+        maxs[buffCount%avgSize] = getMaxIdx(buffer,numFrames);
+        float sum = 0.0f;
+        for (int i = 0; i < avgSize; i++) {
+          sum += maxs[i];
+        }
+        Globals::maxAvg = sum/(float)avgSize;
       }
 
-      // Globals::sndfile.synthesize2( buffer, numFrames);
+      // Tell the Mediator where we are
       g_sample = Globals::sndfile.playhead();
       for (int i = 0; i < numFrames; i++) {
         Globals::mediator->updateCount(g_sample);
         g_sample++;
       }
     }
+    buffCount++;
 }
 
+//-----------------------------------------------------------------------------
+// name: getMaxIdx()
+// desc: get index of max value in a buffer
+//-----------------------------------------------------------------------------
+int getMaxIdx(SAMPLE * buff, int length){
+  int max = 0;
+  for (int i = 1; i < length; i += 2) {
+    if(buff[i] > buff[max]) max = i;
+  }
+  return max;
+}
 
-
+//-----------------------------------------------------------------------------
+// name: next_power_2()
+// desc: ...
+// thanks: to Niklas Werner / music-dsp
+//-----------------------------------------------------------------------------
+unsigned long next_power_2( unsigned long n )
+{
+  unsigned long nn = n;
+  for( ; n &= n-1; nn = n );
+    return nn * 2;
+  }
 
 //-----------------------------------------------------------------------------
 // name: audio_init()

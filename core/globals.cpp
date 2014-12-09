@@ -49,6 +49,8 @@ std::vector<float> Globals::lineAngles;
 
 float Globals::mix;
 
+float Globals::maxAvg;
+
 // Shockwave ints
 std::array<int,5> Globals::waves = {-1,-1,-1,-1,-1};
 

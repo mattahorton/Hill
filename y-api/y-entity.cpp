@@ -2016,6 +2016,7 @@ YTerrain::YTerrain(uint8_t * pHeightMap, bool render, bool shock)
   }
   bRender = render;
   shockwave = shock;
+  minY = 256.0f;
 }
 
 
@@ -2081,11 +2082,21 @@ void YTerrain::DrawVertex(uint8_t *pHeightMap, float x, float z) {
     bool found = false;
     float y = (float) Height(pHeightMap, x + HALF_SIZE, z + HALF_SIZE);
 
+    if (y < minY) {
+      minY = y;
+      Globals::bgColor.updateSet(
+        Vector3D::Vector3D(
+        (50.0f+(Globals::maxAvg*(minY/10)/40.0f))/256.0f,
+        minY / 256.0f,
+        (100.0f+(Globals::maxAvg/20.0f))/256.0f ));
+    }
+
     // The higher the greener
     if(bRender) {
-      glColor3f(50.0f/256.0f, y / 256.0f, (100.0f+.2*y)/256.0f );
+      //glColor3f((50.0f+(Globals::maxAvg/4.0f))/256.0f, y / 256.0f, (100.0f+.2*y)/256.0f );
+      glColor3f((50.0f+(Globals::maxAvg*(y/10)/40.0f))/256.0f, y / 256.0f, (100.0f+(Globals::maxAvg/20.0f))/256.0f );
     } else {
-      glColor3f(0.0f/256.0f, y / 256.0f, (50.0f+y)/256.0f );
+      glColor3f((Globals::maxAvg*(y/10)/40.0f)/256.0f, y / 256.0f, (50.0f+y)/256.0f );
     }
 
     if (shockwave) {
