@@ -46,6 +46,7 @@ class BKSim;
 class Mediator;
 class YEntity;
 class YText;
+class YTerrain;
 
 
 //-----------------------------------------------------------------------------
@@ -64,6 +65,7 @@ public:
     static ScoreParser * parser;
 
     static YEntity * terrain;
+    static YTerrain * ter;
 
     static SndFileSrc sndfile;
 

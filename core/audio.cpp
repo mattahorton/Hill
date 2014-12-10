@@ -32,6 +32,8 @@ float * maxs = new float[avgSize];
 //-----------------------------------------------------------------------------
 static void audio_callback( SAMPLE * buffer, unsigned int numFrames, void * userData )
 {
+    Globals::ter->resetMinY();
+
     int channels = XAudioIO::numChannels();
     int mixBuff = 0;
     SAMPLE * fftBuff = new SAMPLE[numFrames*XAudioIO::numChannels()];

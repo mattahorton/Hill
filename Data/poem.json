@@ -281,7 +281,7 @@
     },
     {
       "text":"I'll find new reasons when you're close again",
-      "time":7,
+      "time":5,
       "cam" : {
         "r" : 800,
         "angle" : 2.4
@@ -305,7 +305,7 @@
     },
     {
       "text":"",
-      "time":10
+      "time":25
     }
   ]
 }

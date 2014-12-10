@@ -27,6 +27,7 @@ ScoreParser * Globals::parser = NULL;
 
 // Global Terrain
 YEntity * Globals::terrain = NULL;
+YTerrain * Globals::ter = NULL;
 
 // Global SndFileSrc
 SndFileSrc Globals::sndfile;

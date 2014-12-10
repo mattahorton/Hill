@@ -2099,7 +2099,7 @@ void YTerrain::DrawVertex(uint8_t *pHeightMap, float x, float z) {
       //glColor3f((50.0f+(Globals::maxAvg/4.0f))/256.0f, y / 256.0f, (100.0f+.2*y)/256.0f );
       glColor3f(
         (50.0f+(Globals::maxAvg*(y/10)/40.0f)-playedRatio*(3.0f/4.0f)*75.0f)/256.0f,
-        y / 256.0f,
+        (y/2) / 256.0f,
         (100.0f+(Globals::maxAvg*(1-playedRatio)/20.0f)-playedRatio*(2.0f/3.0f)*100.0f)/256.0f
       );
 
@@ -2134,4 +2134,9 @@ int YTerrain::Height(uint8_t *pHeightMap, float x, float z)			// This Returns Th
     float out = pHeightMap[(row * MAP_SIZE) + col];
     //cerr << out << endl;
     return out;		// Index Into Our Height Array And Return The Height
+}
+
+void YTerrain::resetMinY(){
+  cerr << minY << endl;
+  minY = 256.0f;
 }

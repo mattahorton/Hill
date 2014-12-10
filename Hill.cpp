@@ -531,7 +531,14 @@ void displayFunc( )
     cam.interp();
     updateMix(r);
 
-    //gluPerspective(persp, ratioz, 0.5f, 5000.0f);
+    persp = 75.0f - ((r-400.0f)/400.0f)*30.0f;
+    gluPerspective(persp, Globals::lastWindowWidth/Globals::lastWindowHeight, 0.5f, 5000.0f);
+
+    // set the matrix mode to modelview
+    glMatrixMode( GL_MODELVIEW );
+
+    // load the identity matrix
+    glLoadIdentity( );
 
     // position the view point
     // Need to work on the point to vector
@@ -574,6 +581,7 @@ void drawTerrain() {
   //entity->addChild(terLine);
   Globals::sim->root().addChild(text);
   Globals::terrain = entity;
+  Globals::ter = ter;
   Globals::text = text;
 }
 

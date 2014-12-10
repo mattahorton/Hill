@@ -713,6 +713,7 @@ public:
     virtual void render();
     virtual void DrawVertex(unsigned char *pHeightMap, float x, float z);
     virtual int Height(unsigned char *pHeightMap, float x, float z);
+    virtual void resetMinY();
 
 public:
     uint8_t m_HeightMap[MAP_SIZE*MAP_SIZE];
