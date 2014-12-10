@@ -3,6 +3,13 @@ Hill
 
 A musical and visual accompaniment to spoken word poetry
 
+###Requirements
+
+Hill requries libsndfile and ftgl. Use brew to install these. 
+```
+brew install libsndfile ftgl
+```
+Hill will require some massaging to compile on Linux. It is not compatible with Windows. (yet!)
 
 ###Instructions
 Place 'poem.json' and audio file in 'Data' directory.
