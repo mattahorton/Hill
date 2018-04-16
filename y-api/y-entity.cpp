@@ -2086,7 +2086,7 @@ void YTerrain::DrawVertex(uint8_t *pHeightMap, float x, float z) {
     if (y < minY) {
       minY = y;
       Globals::bgColor.update(
-        Vector3D::Vector3D(
+        Vector3D(
         (50.0f+(Globals::maxAvg*(minY/10)/40.0f)-playedRatio*(3.0f/4.0f)*75.0f)/256.0f,
         minY / 256.0f,
         (100.0f+(Globals::maxAvg*(1-playedRatio)/20.0f)-playedRatio*(2.0f/3.0f)*100.0f)/256.0f));
@@ -2137,6 +2137,6 @@ int YTerrain::Height(uint8_t *pHeightMap, float x, float z)			// This Returns Th
 }
 
 void YTerrain::resetMinY(){
-  cerr << minY << endl;
+//   cerr << minY << endl;
   minY = 256.0f;
 }

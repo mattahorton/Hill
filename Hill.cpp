@@ -313,7 +313,7 @@ void initGfx()
     LoadJSONFile(poem);
 
     cam.updateSet(
-      Vector3D::Vector3D(
+      Vector3D(
         cam.slewX().value,
         Height(g_HeightMap, cam.actual().x, cam.actual().z) + 250,
         cam.slewZ().value ));
@@ -437,7 +437,7 @@ void specialFunc(int key, int xx, int yy) {
     float fraction = 1.0f;
     float speed = 0.1f;
     float radspeed = 5.0f;
-    Vector3D::Vector3D upd8;
+    Vector3D upd8;
 
     switch (key) {
       case GLUT_KEY_LEFT :
@@ -454,7 +454,7 @@ void specialFunc(int key, int xx, int yy) {
         break;
     }
     cerr << r << endl;
-    upd8 = Vector3D::Vector3D(r*sin(camAngle), cam.slewY().goal, r*cos(camAngle));
+    upd8 = Vector3D(r*sin(camAngle), cam.slewY().goal, r*cos(camAngle));
     cam.update(upd8,.5);
 
 }
@@ -567,8 +567,8 @@ void drawTerrain() {
   YText * text = new YText(0.0f);
 
   text->set("");
-  text->iLoc.updateSet(Vector3D::Vector3D(0,100,0));
-  text->iRGB.updateSet(Vector3D::Vector3D(1,1,1));
+  text->iLoc.updateSet(Vector3D(0,100,0));
+  text->iRGB.updateSet(Vector3D(1,1,1));
 
   ter->sca.set(0.1,0.1,0.1);
   //terLine->loc.set(0,1,0);
@@ -609,7 +609,7 @@ void nextLine() {
   // Update cam based on score
   camAngle = Globals::lineAngles.at(Globals::currentLine);
   r = Globals::lineRadii.at(Globals::currentLine);
-  Vector3D::Vector3D upd8 = Vector3D::Vector3D(r*sin(camAngle), cam.slewY().goal, r*cos(camAngle));
+  Vector3D upd8 = Vector3D(r*sin(camAngle), cam.slewY().goal, r*cos(camAngle));
   cam.update(upd8,.1);
 
   Globals::text->fade(0.0f,0); // Finish fade immediately if it's not done
@@ -617,7 +617,7 @@ void nextLine() {
   iSlew3D loc = Globals::text->iLoc;
 
   Globals::text->iLoc.updateSet(
-    Vector3D::Vector3D(
+    Vector3D(
       (r-500)*sin(camAngle),
       cam.actual().y-100,
       (r-500)*cos(camAngle)
@@ -625,7 +625,7 @@ void nextLine() {
   );
 
   Globals::text->iLoc.update(
-    Vector3D::Vector3D(
+    Vector3D(
       (r-500)*sin(camAngle)+Globals::lineXs.at(Globals::currentLine),
       cam.actual().y-100+Globals::lineYs.at(Globals::currentLine),
       (r-500)*cos(camAngle)+Globals::lineZs.at(Globals::currentLine)
